@@ -3,7 +3,7 @@
 | Item | Status |
 |---|---|
 | Legal / trade name (ar + en) | ⏳ |
-| Original logo files (SVG/AI) + brand colors | ⏳ (only low-res JPEG received) |
+| Original logo files (SVG/AI) + brand colors | 🟡 High-res PNG set received (see docs/BRAND.md); vector originals still needed |
 | Confirm phones: 0788878327 / 0781221617 — which is WhatsApp? | ⏳ |
 | Quote-notification email (hdaibahmad8@gmail.com?) | ⏳ |
 | Exact address (Amman — Al-Rujeib) + Google Maps link | ⏳ |

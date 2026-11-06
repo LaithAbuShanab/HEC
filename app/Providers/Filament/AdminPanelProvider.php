@@ -35,9 +35,10 @@ class AdminPanelProvider extends PanelProvider
                 isRequired: fn (): bool => auth()->user() instanceof User && auth()->user()->isAdmin(),
             )
             ->brandName('HEC')
-            ->brandLogo(asset('images/brand/hec-logo.jpeg'))
-            ->brandLogoHeight('2.5rem')
-            ->favicon(asset('images/brand/hec-logo.jpeg'))
+            ->brandLogo(asset('images/brand/logo-horizontal.webp'))
+            ->darkModeBrandLogo(asset('images/brand/logo-horizontal-on-dark.webp'))
+            ->brandLogoHeight('2.25rem')
+            ->favicon(asset('favicon-32x32.png'))
             ->font('IBM Plex Sans Arabic')
             ->colors([
                 'primary' => Color::hex('#3C6CA8'),

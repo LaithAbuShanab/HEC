@@ -1,0 +1,15 @@
+{
+    "name": "HEC — هديب للحديد والمعدات",
+    "short_name": "HEC",
+    "lang": "ar",
+    "dir": "rtl",
+    "start_url": "/ar",
+    "display": "browser",
+    "background_color": "#ffffff",
+    "theme_color": "#000c1e",
+    "icons": [
+        { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+        { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+        { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    ]
+}
