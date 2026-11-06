@@ -6,7 +6,7 @@ use App\Domain\Catalog\Enums\Availability;
 use App\Domain\Catalog\Enums\ProductCondition;
 use App\Domain\Catalog\Enums\ReviewStatus;
 use App\Domain\Catalog\Support\SearchNormalizer;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Concerns\HasReviewStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -21,7 +21,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Product extends Model implements HasMedia
 {
-    use HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
+    use HasReviewStatus, HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'appendix_no', 'sku', 'slug', 'primary_category_id',
@@ -46,9 +46,9 @@ class Product extends Model implements HasMedia
     protected function casts(): array
     {
         return [
+            'review_status' => ReviewStatus::class,
             'condition' => ProductCondition::class,
             'availability' => Availability::class,
-            'review_status' => ReviewStatus::class,
             'availability_updated_at' => 'datetime',
             'source_reviewed_at' => 'date',
             'published_at' => 'datetime',
@@ -72,10 +72,6 @@ class Product extends Model implements HasMedia
 
             if ($availabilityChanged) {
                 $product->availability_updated_at = now();
-            }
-
-            if ($product->isDirty('review_status') && $product->review_status === ReviewStatus::Published) {
-                $product->published_at ??= now();
             }
 
             foreach (['ar', 'en'] as $locale) {
@@ -131,11 +127,6 @@ class Product extends Model implements HasMedia
     public function historicalSpecs(): HasMany
     {
         return $this->hasMany(HistoricalSpec::class);
-    }
-
-    public function scopePublished(Builder $query): Builder
-    {
-        return $query->where('review_status', ReviewStatus::Published);
     }
 
     public function registerMediaCollections(): void

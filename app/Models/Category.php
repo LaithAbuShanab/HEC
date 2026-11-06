@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Domain\Catalog\Enums\ReviewStatus;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Concerns\HasReviewStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,7 +17,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Category extends Model implements HasMedia
 {
-    use HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
+    use HasReviewStatus, HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
 
     protected $fillable = ['parent_id', 'slug', 'name', 'description', 'sort', 'review_status', 'seo'];
 
@@ -49,11 +49,6 @@ class Category extends Model implements HasMedia
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class)->withPivot('sort');
-    }
-
-    public function scopePublished(Builder $query): Builder
-    {
-        return $query->where('review_status', ReviewStatus::Published);
     }
 
     public function registerMediaCollections(): void
