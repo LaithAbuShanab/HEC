@@ -1,11 +1,12 @@
 <?php
 
+use App\Domain\Localization\Locale;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'welcome')->name('home');
+Route::inertia('/', 'language-select')->name('language.select');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
-});
-
-require __DIR__.'/settings.php';
+Route::prefix('{locale}')
+    ->where(['locale' => Locale::pattern()])
+    ->group(function () {
+        Route::inertia('/', 'home')->name('home');
+    });
