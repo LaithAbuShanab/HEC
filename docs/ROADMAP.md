@@ -31,7 +31,7 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 - [x] Quote requests: status workflow, internal notes, signed attachment download, export (permission-gated)
 - [x] Roles admin/editor/sales (policies), MFA for admin
 - [x] Users resource (deactivate instead of delete, MFA reset), activity log viewer, trash/restore on content
-- [ ] Widgets: new quotes, incomplete records, pending approval, failed notifications, top searches
+- [x] Role-based dashboard: quote stats, 30-day trend, sources, latest quotes, catalog health, products needing work, top and zero-result searches
 - [ ] CSV/XLSX import/export of products
 
 ## Phase 3 — Public frontend
