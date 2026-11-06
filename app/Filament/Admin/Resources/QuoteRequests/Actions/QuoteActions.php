@@ -3,7 +3,9 @@
 namespace App\Filament\Admin\Resources\QuoteRequests\Actions;
 
 use App\Domain\Access\Role;
+use App\Domain\Quotes\Enums\NotificationStatus;
 use App\Domain\Quotes\Enums\QuoteStatus;
+use App\Domain\Quotes\Jobs\SendQuoteNotification;
 use App\Domain\Shared\Support\PhoneNumber;
 use App\Models\QuoteRequest;
 use App\Models\User;
@@ -86,6 +88,23 @@ final class QuoteActions
             ->authorize('update')
             ->visible(fn (QuoteRequest $record) => $record->status !== QuoteStatus::Spam)
             ->action(fn (QuoteRequest $record) => $record->update(['status' => QuoteStatus::Spam]));
+    }
+
+    public static function resendNotification(): Action
+    {
+        return Action::make('resendNotification')
+            ->label(__('admin.quotes.actions.resend_notification'))
+            ->icon('heroicon-o-envelope')
+            ->color('warning')
+            ->requiresConfirmation()
+            ->authorize('update')
+            ->visible(fn (QuoteRequest $record) => $record->notification_status === NotificationStatus::Failed)
+            ->action(function (QuoteRequest $record) {
+                $record->forceFill(['notification_status' => NotificationStatus::Pending, 'last_notification_error' => null])->saveQuietly();
+                SendQuoteNotification::dispatch($record->id);
+
+                Notification::make()->success()->title(__('admin.quotes.actions.notification_queued'))->send();
+            });
     }
 
     public static function call(): Action

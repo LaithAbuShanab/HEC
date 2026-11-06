@@ -23,10 +23,13 @@ use App\Policies\EditorialPolicy;
 use App\Policies\QuoteRequestPolicy;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Events\Login;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Spatie\Activitylog\Models\Activity;
@@ -42,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureAuthorization();
+        $this->configureRateLimits();
 
         Event::listen(Login::class, function (Login $event) {
             if ($event->user instanceof User) {
@@ -65,6 +69,16 @@ class AppServiceProvider extends ServiceProvider
             ? Password::min(12)->mixedCase()->letters()->numbers()->symbols()->uncompromised()
             : null,
         );
+    }
+
+    protected function configureRateLimits(): void
+    {
+        RateLimiter::for('quote-submit', fn (Request $request) => [
+            Limit::perMinute(5)->by('quote-submit:'.$request->ip()),
+            Limit::perDay(30)->by('quote-submit-day:'.$request->ip()),
+        ]);
+
+        RateLimiter::for('quote-cart', fn (Request $request) => Limit::perMinute(90)->by('quote-cart:'.$request->ip()));
     }
 
     protected function configureAuthorization(): void

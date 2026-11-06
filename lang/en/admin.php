@@ -299,6 +299,8 @@ return [
             'whatsapp' => 'WhatsApp',
             'download' => 'Download',
             'mark_spam' => 'Spam',
+            'resend_notification' => 'Resend notification',
+            'notification_queued' => 'The notification has been queued again.',
             'export' => 'Export',
             'status_changed' => 'Status changed to :status',
         ],

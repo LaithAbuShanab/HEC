@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\SwitchPanelLocaleController;
 use App\Http\Controllers\Site\CatalogController;
 use App\Http\Controllers\Site\ContentController;
 use App\Http\Controllers\Site\HomeController;
+use App\Http\Controllers\Site\QuoteCartController;
+use App\Http\Controllers\Site\QuoteRequestController;
 use App\Http\Controllers\Site\SearchController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +29,14 @@ Route::prefix('{locale}')
         Route::get('work', [ContentController::class, 'work'])->name('work.index');
         Route::get('faq', [ContentController::class, 'faq'])->name('faq');
         Route::get('contact', [ContentController::class, 'contact'])->name('contact');
+        Route::get('request-quote', [QuoteRequestController::class, 'create'])->name('quote.create');
+        Route::post('request-quote', [QuoteRequestController::class, 'store'])->middleware('throttle:quote-submit')->name('quote.store');
+        Route::get('request-quote/success', [QuoteRequestController::class, 'success'])->name('quote.success');
+        Route::middleware('throttle:quote-cart')->group(function () {
+            Route::post('request-quote/items', [QuoteCartController::class, 'store'])->name('quote.items.store');
+            Route::patch('request-quote/items/{item}', [QuoteCartController::class, 'update'])->whereNumber('item')->name('quote.items.update');
+            Route::delete('request-quote/items/{item}', [QuoteCartController::class, 'destroy'])->whereNumber('item')->name('quote.items.destroy');
+        });
         Route::get('{key}', [ContentController::class, 'page'])->whereIn('key', ['about', 'privacy', 'terms'])->name('page');
     });
 

@@ -1,12 +1,12 @@
 import { Link } from '@inertiajs/react';
-import { ChevronDown, Menu, Search, X } from 'lucide-react';
+import { ChevronDown, ClipboardList, Menu, Search, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSite } from '@/hooks/use-site';
 import { localized, otherLocale } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 export function SiteHeader() {
-    const { locale, alternates, nav, ui } = useSite();
+    const { locale, alternates, nav, ui, quote } = useSite();
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const target = otherLocale(locale);
@@ -110,9 +110,23 @@ export function SiteHeader() {
                     </a>
                     <Link
                         href={localized(locale, 'request-quote')}
-                        className="hidden rounded-full bg-gold px-4 py-2 text-sm font-semibold text-navy shadow-[0_0_24px_rgb(228_180_42/0.35)] transition hover:bg-[#f0c64a] sm:inline-flex"
+                        aria-label={quote.count > 0 ? `${ui.actions.request_quote} — ${ui.quote.list_badge.replace(':count', String(quote.count))}` : undefined}
+                        className="relative grid size-10 place-items-center rounded-full text-white/80 transition hover:bg-white/10 hover:text-white sm:hidden"
+                    >
+                        <ClipboardList aria-hidden className="size-5" />
+                        {quote.count > 0 ? <QuoteCount count={quote.count} /> : <span className="sr-only">{ui.actions.request_quote}</span>}
+                    </Link>
+                    <Link
+                        href={localized(locale, 'request-quote')}
+                        aria-label={quote.count > 0 ? `${ui.actions.request_quote} — ${ui.quote.list_badge.replace(':count', String(quote.count))}` : undefined}
+                        className="relative hidden items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-semibold text-navy shadow-[0_0_24px_rgb(228_180_42/0.35)] transition hover:bg-[#f0c64a] sm:inline-flex"
                     >
                         {ui.actions.request_quote}
+                        {quote.count > 0 && (
+                            <span aria-hidden className="stamp grid min-w-5 place-items-center rounded-full bg-navy px-1.5 text-[11px] leading-5 text-white">
+                                {quote.count}
+                            </span>
+                        )}
                     </Link>
                     <button
                         type="button"
@@ -164,5 +178,13 @@ export function SiteHeader() {
                 </nav>
             </div>
         </header>
+    );
+}
+
+function QuoteCount({ count }: { count: number }) {
+    return (
+        <span aria-hidden className="stamp absolute -end-0.5 -top-0.5 grid min-w-4.5 place-items-center rounded-full bg-gold px-1 text-[10px] leading-4.5 font-bold text-navy">
+            {count}
+        </span>
     );
 }

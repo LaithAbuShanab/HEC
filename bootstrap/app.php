@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CaptureAttribution;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\HandleRedirects;
 use App\Http\Middleware\SetLocale;
@@ -22,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->web(append: [
             SetLocale::class,
+            CaptureAttribution::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);

@@ -70,4 +70,6 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    'quote_recipient' => env('MAIL_QUOTE_RECIPIENT'),
+
 ];

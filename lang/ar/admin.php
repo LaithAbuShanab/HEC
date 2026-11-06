@@ -299,6 +299,8 @@ return [
             'whatsapp' => 'واتساب',
             'download' => 'تنزيل',
             'mark_spam' => 'مزعج',
+            'resend_notification' => 'إعادة إرسال الإشعار',
+            'notification_queued' => 'أُعيدت جدولة إرسال الإشعار.',
             'export' => 'تصدير',
             'status_changed' => 'تم تغيير الحالة إلى :status',
         ],

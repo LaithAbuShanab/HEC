@@ -56,13 +56,13 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 - [x] Arabic-aware search (normalization + synonyms + FULLTEXT), clear no-result state
 - [ ] WCAG 2.2 AA pass
 
-## Phase 4 — Request for quote
-- [ ] Server-side quote list, edit qty/variant, free-text item
-- [ ] Form + attachments + honeypot/Turnstile + rate limit + idempotency
-- [ ] Transactional save → reference `HEC-YYYY-NNNNN` → success page (noindex)
-- [ ] Queued notification with retries; failure surfaced in admin
-- [ ] WhatsApp prefilled link (product name, URL, chosen specs only)
-- [ ] Feature tests for every section-22 quote scenario
+## Phase 4 — Request for quote ✅
+- [x] Server-side quote list (cookie token, 30-day prune), edit qty/unit/size/notes, free-text item, owner-scoped items
+- [x] Form + attachments (real MIME check, private disk) + honeypot + rate limit + idempotency key
+- [x] Transactional save → reference `HEC-YYYY-NNNNNN` → success page (noindex, reference kept out of the URL)
+- [x] Queued notification with 6 tries and backoff; failure stored and resendable from admin
+- [x] WhatsApp prefilled link (product name, URL, chosen size only)
+- [x] Feature tests for every section-22 quote scenario, plus a Playwright run of the full flow
 
 ## Phase 5 — SEO & analytics
 - [ ] Meta/canonical/hreflang component; JSON-LD (Organization, LocalBusiness, BreadcrumbList, Product w/o fake Offer, Article)

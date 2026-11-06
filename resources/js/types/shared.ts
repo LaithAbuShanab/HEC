@@ -64,6 +64,12 @@ export type SiteStrings = {
     search: Record<string, string>;
     content: Record<string, string>;
     errors: Record<string, { title: string; body: string }> & { home: string };
+    quote: Record<string, string> & {
+        steps: string[];
+        next_steps: string[];
+        fields: Record<string, string>;
+        errors: Record<string, string>;
+    };
 };
 
 export type SharedProps = {
@@ -74,6 +80,8 @@ export type SharedProps = {
     company: CompanyProfile;
     nav: SiteNav;
     ui: SiteStrings;
+    quote: { count: number };
+    flash: { quoteAdded?: string; quoteRemoved?: boolean };
 };
 
 export type SeoProps = {

@@ -1,5 +1,5 @@
-import { Link } from '@inertiajs/react';
-import { FileText, MessageCircle, Plus } from 'lucide-react';
+import { Link, router, usePage } from '@inertiajs/react';
+import { Check, FileText, LoaderCircle, MessageCircle, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { AvailabilityBadge } from '@/components/site/availability-badge';
 import { CategoryGlyph } from '@/components/site/category-glyph';
@@ -48,7 +48,9 @@ type ShowProps = {
 const DIMENSIONS = ['thickness', 'width', 'length', 'diameter', 'nominalSize'] as const;
 
 export default function ProductShow({ product, category, related, guides, seo }: ShowProps) {
-    const { locale, ui, company } = useSite();
+    const { locale, ui, company, flash, quote } = useSite();
+    const errors = usePage().props.errors as Record<string, string | undefined>;
+    const [adding, setAdding] = useState(false);
     const [active, setActive] = useState(0);
     const [variantId, setVariantId] = useState<number | null>(product.variants[0]?.id ?? null);
     const variant = product.variants.find((item) => item.id === variantId) ?? null;
@@ -56,7 +58,14 @@ export default function ProductShow({ product, category, related, guides, seo }:
     const columns = DIMENSIONS.filter((key) => product.variants.some((item) => item[key] !== null));
     const availability = variant?.availability ?? product.availability;
 
-    const quoteHref = `${localized(locale, 'request-quote')}?${new URLSearchParams({ product: product.slug, ...(variant ? { variant: String(variant.id) } : {}) }).toString()}`;
+    const addToQuote = () => {
+        if (adding) {
+            return;
+        }
+
+        setAdding(true);
+        router.post(localized(locale, 'request-quote/items'), { product: product.slug, variant: variant?.id ?? null }, { preserveScroll: true, onFinish: () => setAdding(false) });
+    };
     const whatsappText = [ui.catalog.whatsapp_message.replace(':name', product.name), variant?.label, seo.canonical].filter(Boolean).join('\n');
     const whatsappHref = company.whatsapp ? `${company.whatsapp.href}?text=${encodeURIComponent(whatsappText)}` : null;
 
@@ -147,14 +156,16 @@ export default function ProductShow({ product, category, related, guides, seo }:
                         )}
 
                         <div className="mt-6 flex flex-wrap gap-3">
-                            <Link
-                                href={quoteHref}
+                            <button
+                                type="button"
+                                onClick={addToQuote}
+                                disabled={adding}
                                 data-analytics="add_to_quote"
-                                className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-gold px-6 py-3 font-semibold text-navy shadow-[0_0_24px_rgb(228_180_42/0.3)] transition hover:bg-[#f0c64a]"
+                                className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-gold px-6 py-3 font-semibold text-navy shadow-[0_0_24px_rgb(228_180_42/0.3)] transition hover:bg-[#f0c64a] disabled:opacity-70"
                             >
-                                <Plus aria-hidden className="size-4" />
+                                {adding ? <LoaderCircle aria-hidden className="size-4 animate-spin" /> : <Plus aria-hidden className="size-4" />}
                                 {ui.catalog.add_to_quote}
-                            </Link>
+                            </button>
                             {whatsappHref && (
                                 <a
                                     href={whatsappHref}
@@ -166,6 +177,22 @@ export default function ProductShow({ product, category, related, guides, seo }:
                                     <MessageCircle aria-hidden className="size-4" />
                                     {ui.catalog.ask_whatsapp}
                                 </a>
+                            )}
+                        </div>
+                        <div aria-live="polite">
+                            {flash.quoteAdded && (
+                                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-600/20 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                                    <span className="flex items-center gap-2">
+                                        <Check aria-hidden className="size-4 shrink-0" />
+                                        {ui.quote.added.replace(':name', flash.quoteAdded)}
+                                    </span>
+                                    <Link href={localized(locale, 'request-quote')} className="font-semibold text-navy underline underline-offset-2">
+                                        {ui.quote.view_list} ({quote.count})
+                                    </Link>
+                                </div>
+                            )}
+                            {(errors.product || errors.variant || errors.items) && (
+                                <p className="mt-4 rounded-xl bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800">{errors.product ?? errors.variant ?? errors.items}</p>
                             )}
                         </div>
                         <p className="mt-4 text-xs text-steel-500">{ui.home.quote_note}</p>

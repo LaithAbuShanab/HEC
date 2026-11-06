@@ -38,6 +38,7 @@ class ViewQuoteRequest extends ViewRecord
             QuoteActions::whatsapp(),
             QuoteActions::changeStatus(),
             QuoteActions::notes(),
+            QuoteActions::resendNotification(),
             ActionGroup::make([
                 QuoteActions::assignToMe(),
                 QuoteActions::assign(),
