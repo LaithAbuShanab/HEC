@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Catalog\Enums\Concerns;
+namespace App\Domain\Shared\Concerns;
 
 trait HasBilingualLabels
 {

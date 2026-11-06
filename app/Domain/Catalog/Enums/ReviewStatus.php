@@ -2,7 +2,7 @@
 
 namespace App\Domain\Catalog\Enums;
 
-use App\Domain\Catalog\Enums\Concerns\HasBilingualLabels;
+use App\Domain\Shared\Concerns\HasBilingualLabels;
 
 enum ReviewStatus: string
 {

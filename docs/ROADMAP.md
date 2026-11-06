@@ -6,18 +6,19 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 - [x] Laravel 13 + Inertia 3 React starter, Pest
 - [x] Filament 5 panel + Spatie packages + Horizon
 - [x] CLAUDE.md, ROADMAP, missing-data list
+- [x] Removed starter-kit customer accounts (out of scope §4); admin auth is Filament only
 - [x] Push to GitHub (`LaithAbuShanab/HEC`)
 - [ ] CI (GitHub Actions): pint, phpstan, pest, tsc, build
 - [ ] Inertia SSR enabled + verified (view-source shows product content)
 - [ ] Design system: tokens from logo (gold, sky blue, navy, steel grey), Arabic/Latin fonts, motion language
 
 ## Phase 1 — Data model & seed
-- [ ] Locale routing `/ar`, `/en`, root language page (no geo redirect)
+- [x] Locale routing `/ar`, `/en`, root language page (no geo redirect)
 - [x] Migrations/models/enums: categories, products, category_product (primary flag), product_variants,
       attributes + attribute_values, sale_units, related_products, historical_specs
-- [ ] Content: services, guides, industries, work_items, faqs, pages
-- [ ] Quotes: quote_carts(+items), quote_requests(+items, attachments)
-- [ ] SEO/system: redirects, search_synonyms, search_logs
+- [x] Content: services, guides, industries, work_items, faqs, pages
+- [x] Quotes: quote_carts(+items), quote_requests(+items, attachments)
+- [x] SEO/system: redirects, search_synonyms, search_logs
 - [x] Seed 9 categories, sale units, synonyms
 - [x] Seed all 43 appendix products (`database/data/catalog.json`); ambiguous → draft + missing list
 - [x] `php artisan hec:product-register` → register of the 43 items (id, location, review status)
