@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Admin\Navigation\NavigationGroup;
+use App\Http\Middleware\SetPanelLocale;
 use App\Support\BrandColors;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
@@ -13,6 +14,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -49,6 +51,8 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->navigationGroups(NavigationGroup::class)
             ->databaseNotifications()
+            ->renderHook(PanelsRenderHook::USER_MENU_BEFORE, fn () => view('filament.admin.locale-switch'))
+            ->renderHook(PanelsRenderHook::SIMPLE_PAGE_START, fn () => view('filament.admin.locale-switch-simple'))
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
             ->pages([
@@ -67,6 +71,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->middleware([SetPanelLocale::class], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
             ]);

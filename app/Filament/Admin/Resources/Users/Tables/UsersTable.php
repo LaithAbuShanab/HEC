@@ -28,7 +28,7 @@ class UsersTable
                 TextColumn::make('role')
                     ->label(__('admin.users.fields.role'))
                     ->badge()
-                    ->state(fn (User $record) => self::roleOf($record)?->label('ar'))
+                    ->state(fn (User $record) => self::roleOf($record)?->label())
                     ->color(fn (User $record) => match (self::roleOf($record)) {
                         Role::Admin => 'danger',
                         Role::Editor => 'info',
@@ -45,7 +45,7 @@ class UsersTable
             ->filters([
                 SelectFilter::make('role')
                     ->label(__('admin.users.fields.role'))
-                    ->options(Role::options('ar'))
+                    ->options(Role::options())
                     ->query(fn (Builder $query, array $data) => filled($data['value'] ?? null)
                         ? $query->whereHas('roles', fn (Builder $roles) => $roles->where('name', $data['value']))
                         : $query),

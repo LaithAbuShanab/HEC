@@ -40,7 +40,7 @@ class LatestQuotesTable extends TableWidget
                 TextColumn::make('status')
                     ->label(__('admin.quotes.fields.status'))
                     ->badge()
-                    ->formatStateUsing(fn (QuoteStatus $state) => $state->label('ar'))
+                    ->formatStateUsing(fn (QuoteStatus $state) => $state->label())
                     ->color(fn (QuoteStatus $state) => QuoteRequestInfolist::statusColor($state)),
                 TextColumn::make('created_at')->label(__('admin.quotes.fields.created_at'))->since(),
             ]);

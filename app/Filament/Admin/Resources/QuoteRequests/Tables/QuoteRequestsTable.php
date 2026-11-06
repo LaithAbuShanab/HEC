@@ -47,7 +47,7 @@ class QuoteRequestsTable
                 TextColumn::make('status')
                     ->label(__('admin.quotes.fields.status'))
                     ->badge()
-                    ->formatStateUsing(fn (QuoteStatus $state) => $state->label('ar'))
+                    ->formatStateUsing(fn (QuoteStatus $state) => $state->label())
                     ->color(fn (QuoteStatus $state) => QuoteRequestInfolist::statusColor($state)),
                 IconColumn::make('notification_status')
                     ->label(__('admin.quotes.fields.notification_status'))
@@ -61,7 +61,7 @@ class QuoteRequestsTable
                         NotificationStatus::Sent => 'success',
                         NotificationStatus::Failed => 'danger',
                     })
-                    ->tooltip(fn (NotificationStatus $state) => $state->label('ar')),
+                    ->tooltip(fn (NotificationStatus $state) => $state->label()),
                 TextColumn::make('assignee.name')->label(__('admin.quotes.fields.assignee'))->placeholder('—')->toggleable(),
                 TextColumn::make('created_at')
                     ->label(__('admin.quotes.fields.created_at'))
@@ -72,7 +72,7 @@ class QuoteRequestsTable
             ->filters([
                 SelectFilter::make('status')
                     ->label(__('admin.quotes.fields.status'))
-                    ->options(QuoteStatus::options('ar'))
+                    ->options(QuoteStatus::options())
                     ->multiple(),
                 Filter::make('mine')
                     ->label(__('admin.quotes.filters.mine'))

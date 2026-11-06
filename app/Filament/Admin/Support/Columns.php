@@ -13,9 +13,14 @@ final class Columns
     {
         return TextColumn::make($name)
             ->label($label ?? __("admin.content.fields.{$name}"))
-            ->state(fn (Model $record) => $record instanceof Translatable ? $record->getTranslation($name, 'ar') : null)
-            ->description(fn (Model $record) => $record instanceof Translatable ? $record->getTranslation($name, 'en', false) : null)
+            ->state(fn (Model $record) => $record instanceof Translatable ? $record->getTranslation($name, app()->getLocale()) : null)
+            ->description(fn (Model $record) => $record instanceof Translatable ? $record->getTranslation($name, self::otherLocale(), false) : null)
             ->wrap();
+    }
+
+    public static function otherLocale(): string
+    {
+        return app()->getLocale() === 'ar' ? 'en' : 'ar';
     }
 
     public static function reviewStatus(): TextColumn
@@ -23,7 +28,7 @@ final class Columns
         return TextColumn::make('review_status')
             ->label(__('admin.common.review_status'))
             ->badge()
-            ->formatStateUsing(fn (ReviewStatus $state) => $state->label('ar'))
+            ->formatStateUsing(fn (ReviewStatus $state) => $state->label())
             ->color(fn (ReviewStatus $state) => match ($state) {
                 ReviewStatus::Draft => 'gray',
                 ReviewStatus::Pending => 'warning',

@@ -46,19 +46,19 @@ class ProductsTable
                     ->placeholder('—'),
                 TextColumn::make('name')
                     ->label(__('admin.products.fields.name'))
-                    ->state(fn (Product $record) => $record->getTranslation('name', 'ar'))
-                    ->description(fn (Product $record) => $record->getTranslation('name', 'en', false))
+                    ->state(fn (Product $record) => $record->getTranslation('name', app()->getLocale()))
+                    ->description(fn (Product $record) => $record->getTranslation('name', Columns::otherLocale(), false))
                     ->searchable(query: fn (Builder $query, string $search) => self::search($query, $search))
                     ->wrap(),
                 TextColumn::make('primaryCategory.name')
                     ->label(__('admin.products.fields.primary_category'))
-                    ->state(fn (Product $record) => $record->primaryCategory instanceof Category ? $record->primaryCategory->getTranslation('name', 'ar') : null)
+                    ->state(fn (Product $record) => $record->primaryCategory instanceof Category ? $record->primaryCategory->getTranslation('name', app()->getLocale()) : null)
                     ->toggleable(),
                 Columns::reviewStatus(),
                 TextColumn::make('availability')
                     ->label(__('admin.products.fields.availability'))
                     ->badge()
-                    ->formatStateUsing(fn (Availability $state) => $state->label('ar'))
+                    ->formatStateUsing(fn (Availability $state) => $state->label())
                     ->color(fn (Availability $state) => match ($state) {
                         Availability::NeedsConfirmation => 'gray',
                         Availability::InStock => 'success',
@@ -89,10 +89,10 @@ class ProductsTable
             ->filters([
                 SelectFilter::make('review_status')
                     ->label(__('admin.common.review_status'))
-                    ->options(ReviewStatus::options('ar')),
+                    ->options(ReviewStatus::options()),
                 SelectFilter::make('availability')
                     ->label(__('admin.products.fields.availability'))
-                    ->options(Availability::options('ar')),
+                    ->options(Availability::options()),
                 SelectFilter::make('primary_category_id')
                     ->label(__('admin.products.fields.primary_category'))
                     ->options(Options::categories()),
@@ -143,7 +143,7 @@ class ProductsTable
             ->schema([
                 Select::make('availability')
                     ->label(__('admin.products.fields.availability'))
-                    ->options(Availability::options('ar'))
+                    ->options(Availability::options())
                     ->required(),
             ])
             ->action(function (Collection $records, array $data) {
@@ -160,7 +160,7 @@ class ProductsTable
             ->schema([
                 Select::make('review_status')
                     ->label(__('admin.common.review_status'))
-                    ->options(ReviewStatus::options('ar'))
+                    ->options(ReviewStatus::options())
                     ->required(),
             ])
             ->action(function (Collection $records, array $data) {

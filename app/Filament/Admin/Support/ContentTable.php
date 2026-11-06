@@ -33,7 +33,7 @@ final class ContentTable
                 Columns::updatedAt(),
             ])
             ->filters([
-                SelectFilter::make('review_status')->label(__('admin.common.review_status'))->options(ReviewStatus::options('ar')),
+                SelectFilter::make('review_status')->label(__('admin.common.review_status'))->options(ReviewStatus::options()),
                 TrashedFilter::make(),
             ])
             ->recordActions([

@@ -23,14 +23,14 @@ class QuoteRequestExporter extends Exporter
             ExportColumn::make('created_at')->label(__('admin.quotes.fields.created_at'))
                 ->formatStateUsing(fn ($state) => $state?->format('Y-m-d H:i')),
             ExportColumn::make('status')->label(__('admin.quotes.fields.status'))
-                ->formatStateUsing(fn (QuoteStatus $state) => $state->label('ar')),
+                ->formatStateUsing(fn (QuoteStatus $state) => $state->label()),
             ExportColumn::make('name')->label(__('admin.quotes.fields.name')),
             ExportColumn::make('phone')->label(__('admin.quotes.fields.phone')),
             ExportColumn::make('company')->label(__('admin.quotes.fields.company')),
             ExportColumn::make('email')->label(__('admin.quotes.fields.email')),
             ExportColumn::make('city')->label(__('admin.quotes.fields.city')),
             ExportColumn::make('fulfillment')->label(__('admin.quotes.fields.fulfillment'))
-                ->formatStateUsing(fn (FulfillmentMethod $state) => $state->label('ar')),
+                ->formatStateUsing(fn (FulfillmentMethod $state) => $state->label()),
             ExportColumn::make('needed_by')->label(__('admin.quotes.fields.needed_by'))
                 ->formatStateUsing(fn ($state) => $state?->format('Y-m-d')),
             ExportColumn::make('items')->label(__('admin.quotes.sections.items'))

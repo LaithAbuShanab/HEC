@@ -35,7 +35,7 @@ abstract class TranslatableResource extends Resource
 
     public static function getRecordTitle(?Model $record): string
     {
-        return $record instanceof Translatable ? (string) $record->getTranslation(static::$titleAttribute, 'ar') : '';
+        return $record instanceof Translatable ? (string) $record->getTranslation(static::$titleAttribute, app()->getLocale()) : '';
     }
 
     public static function getRecordRouteBindingEloquentQuery(): Builder

@@ -37,7 +37,7 @@ class UserForm
                     ->autocomplete('new-password'),
                 Select::make('role')
                     ->label(__('admin.users.fields.role'))
-                    ->options(Role::options('ar'))
+                    ->options(Role::options())
                     ->required()
                     ->rule(fn (?User $record) => function (string $attribute, mixed $value, Closure $fail) use ($record) {
                         if ($record !== null && $record->is(auth()->user()) && $record->isAdmin() && $value !== Role::Admin->value) {

@@ -61,7 +61,7 @@ class VariantsRelationManager extends RelationManager
                 Select::make('sale_unit_id')->label(__('admin.products.fields.sale_unit'))->options(Options::saleUnits()),
                 Select::make('availability')
                     ->label(__('admin.products.fields.availability'))
-                    ->options(Availability::options('ar'))
+                    ->options(Availability::options())
                     ->placeholder(__('admin.variants.fields.inherit_availability')),
                 TextInput::make('sort')->label(__('admin.common.sort'))->numeric()->minValue(0)->default(0),
             ]),
@@ -76,7 +76,7 @@ class VariantsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('label')
                     ->label(__('admin.variants.fields.label'))
-                    ->state(fn (ProductVariant $record) => $record->labelFor('ar')),
+                    ->state(fn (ProductVariant $record) => $record->labelFor(app()->getLocale())),
                 TextColumn::make('standard')->label(__('admin.products.fields.standard'))->placeholder('—'),
                 TextColumn::make('thickness_mm')->label(__('admin.variants.fields.thickness_mm'))->placeholder('—'),
                 TextColumn::make('width_mm')->label(__('admin.variants.fields.width_mm'))->placeholder('—'),
@@ -84,7 +84,7 @@ class VariantsRelationManager extends RelationManager
                 TextColumn::make('nominal_size')->label(__('admin.variants.fields.nominal_size'))->placeholder('—'),
                 TextColumn::make('availability')
                     ->label(__('admin.products.fields.availability'))
-                    ->formatStateUsing(fn (?Availability $state) => $state?->label('ar'))
+                    ->formatStateUsing(fn (?Availability $state) => $state?->label())
                     ->placeholder(__('admin.variants.fields.inherit_availability')),
             ])
             ->headerActions([

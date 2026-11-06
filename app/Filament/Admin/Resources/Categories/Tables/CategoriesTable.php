@@ -27,14 +27,14 @@ class CategoriesTable
                 SpatieMediaLibraryImageColumn::make('cover')->label('')->collection('cover')->square()->imageSize(44),
                 TextColumn::make('name')
                     ->label(__('admin.categories.fields.name'))
-                    ->state(fn (Category $record) => $record->getTranslation('name', 'ar'))
-                    ->description(fn (Category $record) => $record->getTranslation('name', 'en', false)),
+                    ->state(fn (Category $record) => $record->getTranslation('name', app()->getLocale()))
+                    ->description(fn (Category $record) => $record->getTranslation('name', Columns::otherLocale(), false)),
                 TextColumn::make('slug')->label(__('admin.common.slug'))->color('gray')->formatStateUsing(fn (?string $state) => Display::ltr($state)),
                 TextColumn::make('primary_products_count')->label(__('admin.categories.fields.products_count'))->badge(),
                 Columns::reviewStatus(),
             ])
             ->filters([
-                SelectFilter::make('review_status')->label(__('admin.common.review_status'))->options(ReviewStatus::options('ar')),
+                SelectFilter::make('review_status')->label(__('admin.common.review_status'))->options(ReviewStatus::options()),
                 TrashedFilter::make(),
             ])
             ->recordActions([

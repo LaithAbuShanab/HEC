@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\SpecAttributes;
 use App\Filament\Admin\Resources\SpecAttributes\Pages\ManageSpecAttributes;
 use App\Filament\Admin\Resources\TranslatableResource;
 use App\Filament\Admin\Support\Bilingual;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\GuardedDelete;
 use App\Filament\Admin\Support\TranslatableActions;
 use App\Models\SpecAttribute;
@@ -71,8 +72,8 @@ class SpecAttributeResource extends TranslatableResource
             ->columns([
                 TextColumn::make('name')
                     ->label(__('admin.spec_attributes.fields.name'))
-                    ->state(fn (SpecAttribute $record) => $record->getTranslation('name', 'ar'))
-                    ->description(fn (SpecAttribute $record) => $record->getTranslation('name', 'en', false)),
+                    ->state(fn (SpecAttribute $record) => $record->getTranslation('name', app()->getLocale()))
+                    ->description(fn (SpecAttribute $record) => $record->getTranslation('name', Columns::otherLocale(), false)),
                 TextColumn::make('key')->label(__('admin.spec_attributes.fields.key'))->badge()->color('gray'),
                 TextColumn::make('unit')->label(__('admin.spec_attributes.fields.unit'))->placeholder('—'),
                 TextColumn::make('type')

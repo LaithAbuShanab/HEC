@@ -72,7 +72,7 @@ class ProductForm
                 Select::make('categories')
                     ->label(__('admin.products.fields.categories'))
                     ->relationship('categories', 'slug')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', 'ar'))
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', app()->getLocale()))
                     ->multiple()
                     ->preload(),
             ]),
@@ -93,7 +93,7 @@ class ProductForm
             Select::make('related')
                 ->label(__('admin.products.fields.related'))
                 ->relationship('related', 'slug')
-                ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', 'ar'))
+                ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', app()->getLocale()))
                 ->multiple()
                 ->searchable()
                 ->preload(),
@@ -115,7 +115,7 @@ class ProductForm
                 Select::make('sale_unit_id')->label(__('admin.products.fields.sale_unit'))->options(Options::saleUnits()),
                 Select::make('condition')
                     ->label(__('admin.products.fields.condition'))
-                    ->options(ProductCondition::options('ar'))
+                    ->options(ProductCondition::options())
                     ->default(ProductCondition::Unconfirmed->value)
                     ->required(),
             ]),
@@ -144,7 +144,7 @@ class ProductForm
             Grid::make(2)->schema([
                 Select::make('availability')
                     ->label(__('admin.products.fields.availability'))
-                    ->options(Availability::options('ar'))
+                    ->options(Availability::options())
                     ->default(Availability::NeedsConfirmation->value)
                     ->required(),
                 TextEntry::make('availability_updated_at')
@@ -214,7 +214,7 @@ class ProductForm
                     TextEntry::make('historical_specs_list')
                         ->hiddenLabel()
                         ->state(fn (?Product $record) => $record === null ? [] : HistoricalSpec::where('product_id', $record->id)->get()
-                            ->map(fn (HistoricalSpec $spec) => $spec->getTranslation('note', 'ar'))->all())
+                            ->map(fn (HistoricalSpec $spec) => $spec->getTranslation('note', app()->getLocale()))->all())
                         ->listWithLineBreaks()
                         ->bulleted(),
                 ]),

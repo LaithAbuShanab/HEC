@@ -35,12 +35,12 @@ class QuoteRequestInfolist
                 Section::make(__('admin.quotes.sections.handling'))->columnSpan(1)->schema([
                     TextEntry::make('reference')->label(__('admin.quotes.fields.reference'))->copyable()->weight('bold'),
                     TextEntry::make('status')->label(__('admin.quotes.fields.status'))->badge()
-                        ->formatStateUsing(fn (QuoteStatus $state) => $state->label('ar'))
+                        ->formatStateUsing(fn (QuoteStatus $state) => $state->label())
                         ->color(fn (QuoteStatus $state) => self::statusColor($state)),
                     TextEntry::make('assignee.name')->label(__('admin.quotes.fields.assignee'))->placeholder('—'),
                     TextEntry::make('created_at')->label(__('admin.quotes.fields.created_at'))->dateTime('Y-m-d H:i'),
                     TextEntry::make('notification_status')->label(__('admin.quotes.fields.notification_status'))->badge()
-                        ->formatStateUsing(fn (NotificationStatus $state) => $state->label('ar'))
+                        ->formatStateUsing(fn (NotificationStatus $state) => $state->label())
                         ->color(fn (NotificationStatus $state) => match ($state) {
                             NotificationStatus::Pending => 'warning',
                             NotificationStatus::Sent => 'success',
@@ -53,7 +53,7 @@ class QuoteRequestInfolist
             ]),
             Section::make(__('admin.quotes.sections.request'))->columnSpanFull()->columns(3)->schema([
                 TextEntry::make('fulfillment')->label(__('admin.quotes.fields.fulfillment'))
-                    ->formatStateUsing(fn (FulfillmentMethod $state) => $state->label('ar')),
+                    ->formatStateUsing(fn (FulfillmentMethod $state) => $state->label()),
                 TextEntry::make('needed_by')->label(__('admin.quotes.fields.needed_by'))->date('Y-m-d')
                     ->placeholder('—')->helperText(__('admin.quotes.fields.needed_by_help')),
                 TextEntry::make('source')->label(__('admin.quotes.fields.source'))

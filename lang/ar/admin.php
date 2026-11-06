@@ -6,6 +6,8 @@ return [
         'en' => 'English',
     ],
 
+    'switch_language' => 'English',
+
     'navigation' => [
         'catalog' => 'الكتالوج',
         'content' => 'المحتوى',
@@ -48,6 +50,7 @@ return [
         'seo_help' => 'اتركه فارغًا لاستخدام العنوان والوصف المختصر تلقائيًا.',
         'images' => 'الصور',
         'alt_text' => 'النص البديل',
+        'characters' => ':count / :max حرف',
     ],
 
     'products' => [
@@ -70,7 +73,6 @@ return [
             'published_at' => 'تاريخ النشر',
             'primary_category_id' => 'التصنيف الأساسي',
             'sale_unit_id' => 'وحدة البيع',
-            'price_currency' => 'العملة',
             'appendix_no' => 'رقم الملحق',
             'sku' => 'SKU',
             'sku_help' => 'رمز داخلي، لا يُعرض كرقم مصنّع.',
@@ -399,6 +401,7 @@ return [
             'is_active_help' => 'المستخدم الموقوف لا يستطيع الدخول. نوقف الحساب بدل حذفه للحفاظ على سجل التغييرات.',
             'mfa' => 'المصادقة الثنائية',
             'last_login_at' => 'آخر دخول',
+            'locale' => 'لغة اللوحة',
         ],
         'actions' => [
             'reset_mfa' => 'إعادة ضبط المصادقة الثنائية',

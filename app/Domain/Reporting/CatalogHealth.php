@@ -33,7 +33,7 @@ final class CatalogHealth
             ->get()
             ->map(fn (Product $product) => [
                 'id' => $product->id,
-                'name' => $product->getTranslation('name', 'ar'),
+                'name' => $product->getTranslation('name', app()->getLocale()),
                 'status' => $product->review_status,
                 'blockers' => $product->publicationBlockers(),
                 'missing' => $product->missing_fields ?? [],

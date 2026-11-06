@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\SaleUnits;
 use App\Filament\Admin\Resources\SaleUnits\Pages\ManageSaleUnits;
 use App\Filament\Admin\Resources\TranslatableResource;
 use App\Filament\Admin\Support\Bilingual;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\GuardedDelete;
 use App\Filament\Admin\Support\TranslatableActions;
 use App\Models\SaleUnit;
@@ -53,8 +54,8 @@ class SaleUnitResource extends TranslatableResource
             ->columns([
                 TextColumn::make('name')
                     ->label(__('admin.sale_units.fields.name'))
-                    ->state(fn (SaleUnit $record) => $record->getTranslation('name', 'ar'))
-                    ->description(fn (SaleUnit $record) => $record->getTranslation('name', 'en', false)),
+                    ->state(fn (SaleUnit $record) => $record->getTranslation('name', app()->getLocale()))
+                    ->description(fn (SaleUnit $record) => $record->getTranslation('name', Columns::otherLocale(), false)),
                 TextColumn::make('key')->label(__('admin.sale_units.fields.key'))->badge()->color('gray'),
             ])
             ->recordActions([

@@ -36,7 +36,7 @@ class GuideForm
                     Select::make('categories')
                         ->label(__('admin.content.fields.categories'))
                         ->relationship('categories', 'slug')
-                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', 'ar'))
+                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', app()->getLocale()))
                         ->multiple()
                         ->preload(),
                 ]),

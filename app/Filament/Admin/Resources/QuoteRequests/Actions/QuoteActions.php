@@ -24,7 +24,7 @@ final class QuoteActions
             ->schema([
                 Select::make('status')
                     ->label(__('admin.quotes.fields.status'))
-                    ->options(QuoteStatus::options('ar'))
+                    ->options(QuoteStatus::options())
                     ->required(),
             ])
             ->action(function (QuoteRequest $record, array $data) {
@@ -32,7 +32,7 @@ final class QuoteActions
 
                 Notification::make()
                     ->success()
-                    ->title(__('admin.quotes.actions.status_changed', ['status' => $record->status->label('ar')]))
+                    ->title(__('admin.quotes.actions.status_changed', ['status' => $record->status->label()]))
                     ->send();
             });
     }

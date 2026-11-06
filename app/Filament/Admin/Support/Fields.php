@@ -32,7 +32,7 @@ final class Fields
     {
         return Select::make('review_status')
             ->label(__('admin.common.review_status'))
-            ->options(ReviewStatus::options('ar'))
+            ->options(ReviewStatus::options())
             ->default(ReviewStatus::Draft->value)
             ->required();
     }
@@ -73,7 +73,7 @@ final class Fields
         return Select::make('products')
             ->label(__('admin.content.fields.products'))
             ->relationship('products', 'slug')
-            ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', 'ar'))
+            ->getOptionLabelFromRecordUsing(fn ($record) => $record->getTranslation('name', app()->getLocale()))
             ->multiple()
             ->searchable()
             ->preload();

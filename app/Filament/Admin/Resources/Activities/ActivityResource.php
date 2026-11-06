@@ -184,7 +184,7 @@ class ActivityResource extends Resource
     {
         $attribute = collect(['name', 'title', 'question'])->first(fn (string $key) => in_array($key, $subject->getTranslatableAttributes(), true));
 
-        return $attribute === null ? null : (string) $subject->getTranslation($attribute, 'ar');
+        return $attribute === null ? null : (string) $subject->getTranslation($attribute, app()->getLocale());
     }
 
     private static function changesTable(Activity $activity): HtmlString
