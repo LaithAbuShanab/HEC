@@ -19,7 +19,6 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use LaraZeus\SpatieTranslatable\SpatieTranslatablePlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -48,7 +47,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
-            ->plugin(SpatieTranslatablePlugin::make()->defaultLocales(['ar', 'en']))
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
             ->pages([

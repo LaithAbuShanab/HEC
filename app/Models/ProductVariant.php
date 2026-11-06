@@ -5,22 +5,18 @@ namespace App\Models;
 use App\Domain\Catalog\Enums\Availability;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\Translatable\HasTranslations;
 
 class ProductVariant extends Model
 {
-    use HasTranslations;
-
     protected $fillable = [
         'product_id', 'sku', 'label', 'standard', 'thickness_mm', 'width_mm', 'length_mm',
         'diameter_mm', 'nominal_size', 'sale_unit_id', 'availability', 'sort',
     ];
 
-    public array $translatable = ['label'];
-
     protected function casts(): array
     {
         return [
+            'label' => 'array',
             'availability' => Availability::class,
             'thickness_mm' => 'decimal:3',
             'width_mm' => 'decimal:2',
@@ -37,5 +33,10 @@ class ProductVariant extends Model
     public function saleUnit(): BelongsTo
     {
         return $this->belongsTo(SaleUnit::class);
+    }
+
+    public function labelFor(string $locale): ?string
+    {
+        return $this->label[$locale] ?? $this->label['ar'] ?? null;
     }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Contracts\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 
-class SpecAttribute extends Model
+class SpecAttribute extends Model implements Translatable
 {
     use HasTranslations;
 

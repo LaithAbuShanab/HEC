@@ -5,8 +5,10 @@ namespace App\Models;
 use App\Domain\Catalog\Enums\Availability;
 use App\Domain\Catalog\Enums\ProductCondition;
 use App\Domain\Catalog\Enums\ReviewStatus;
+use App\Domain\Catalog\Exceptions\PublicationBlocked;
 use App\Domain\Catalog\Support\SearchNormalizer;
 use App\Models\Concerns\HasReviewStatus;
+use App\Models\Contracts\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -19,7 +21,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
 
-class Product extends Model implements HasMedia
+class Product extends Model implements HasMedia, Translatable
 {
     use HasReviewStatus, HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
 
@@ -66,6 +68,14 @@ class Product extends Model implements HasMedia
         });
 
         static::saving(function (Product $product) {
+            if ($product->isDirty('review_status') && $product->review_status === ReviewStatus::Published) {
+                $blockers = $product->publicationBlockers();
+
+                if ($blockers !== []) {
+                    throw new PublicationBlocked($blockers);
+                }
+            }
+
             $availabilityChanged = $product->exists
                 ? $product->isDirty('availability')
                 : $product->availability !== Availability::NeedsConfirmation;
@@ -78,6 +88,31 @@ class Product extends Model implements HasMedia
                 $product->{"search_text_{$locale}"} = $product->buildSearchText($locale);
             }
         });
+    }
+
+    public function publicationBlockers(): array
+    {
+        $blockers = [];
+
+        foreach (['name', 'short_description'] as $attribute) {
+            foreach (['ar', 'en'] as $locale) {
+                if (blank($this->getTranslation($attribute, $locale, false))) {
+                    $blockers[] = $attribute;
+                    break;
+                }
+            }
+        }
+
+        if (! $this->media()->where('collection_name', 'main')->exists()) {
+            $blockers[] = 'main_image';
+        }
+
+        $category = Category::find($this->primary_category_id);
+        if ($category === null || $category->review_status !== ReviewStatus::Published) {
+            $blockers[] = 'category_unpublished';
+        }
+
+        return $blockers;
     }
 
     public function buildSearchText(string $locale): string

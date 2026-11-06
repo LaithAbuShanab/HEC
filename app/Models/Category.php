@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Domain\Catalog\Enums\ReviewStatus;
 use App\Models\Concerns\HasReviewStatus;
+use App\Models\Contracts\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,7 +16,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Translatable\HasTranslations;
 
-class Category extends Model implements HasMedia
+class Category extends Model implements HasMedia, Translatable
 {
     use HasReviewStatus, HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
 
