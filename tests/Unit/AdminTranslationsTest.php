@@ -12,13 +12,13 @@ function flattenKeys(array $values, string $prefix = ''): array
     return $keys;
 }
 
-it('keeps the arabic and english admin translations in sync', function () {
-    $arabic = flattenKeys(require dirname(__DIR__, 2).'/lang/ar/admin.php');
-    $english = flattenKeys(require dirname(__DIR__, 2).'/lang/en/admin.php');
+it('keeps the arabic and english translations in sync', function (string $file) {
+    $arabic = flattenKeys(require dirname(__DIR__, 2)."/lang/ar/{$file}.php");
+    $english = flattenKeys(require dirname(__DIR__, 2)."/lang/en/{$file}.php");
 
     expect(array_values(array_diff($arabic, $english)))->toBe([], 'Missing in English')
         ->and(array_values(array_diff($english, $arabic)))->toBe([], 'Missing in Arabic');
-});
+})->with(['admin', 'site']);
 
 it('keeps placeholders identical across languages', function () {
     $arabic = require dirname(__DIR__, 2).'/lang/ar/admin.php';

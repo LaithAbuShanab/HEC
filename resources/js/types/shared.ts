@@ -29,10 +29,38 @@ export type CompanyProfile = {
     social: Partial<Record<'facebook' | 'instagram' | 'youtube' | 'linkedin' | 'tiktok', string>>;
 };
 
+export type NavCategory = {
+    slug: string;
+    name: string;
+    products: number;
+};
+
+export type SiteNav = {
+    categories: NavCategory[];
+    sections: Record<'services' | 'industries' | 'guides' | 'work' | 'faq' | 'about', boolean>;
+};
+
+export type HowStep = {
+    title: string;
+    body: string;
+};
+
+export type SiteStrings = {
+    skip_to_content: string;
+    brand: string;
+    nav: Record<string, string>;
+    actions: Record<string, string>;
+    home: Record<string, string> & { how_steps: HowStep[] };
+    footer: Record<string, string>;
+    weekdays: Record<string, string>;
+};
+
 export type SharedProps = {
     name: string;
     locale: Locale;
     direction: 'rtl' | 'ltr';
     alternates: Record<Locale, string>;
     company: CompanyProfile;
+    nav: SiteNav;
+    ui: SiteStrings;
 };

@@ -10,8 +10,8 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 - [x] Push to GitHub (`LaithAbuShanab/HEC`)
 - [x] Tests run on MySQL `hec_testing` with a guard against any non-testing database
 - [ ] CI (GitHub Actions): pint, phpstan, pest, tsc, build
-- [ ] Inertia SSR enabled + verified (view-source shows product content)
-- [ ] Design system: tokens from logo (gold, sky blue, navy, steel grey), Arabic/Latin fonts, motion language
+- [x] Inertia SSR enabled + verified (headline, nav and categories present in server HTML)
+- [x] Design system: brand tokens, self-hosted IBM Plex Sans Arabic + Space Grotesk with metric fallbacks, motion language (weld ring, laser text, sparks, coil)
 
 ## Phase 1 — Data model & seed
 - [x] Locale routing `/ar`, `/en`, root language page (no geo redirect)
@@ -46,9 +46,10 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 - [x] Auto slug from English name, SEO character counters, unit suffixes, global search for products and quotes
 
 ## Phase 3 — Public frontend
-- [ ] Layout: header (search, quote CTA, language switch keeping record), footer, floating WhatsApp/call (non-blocking)
+- [x] Layout: header (search, quote CTA, language switch keeping record), footer, floating WhatsApp/call (non-blocking)
 - [ ] Pages: home, products, category (+filters), product, services(+detail), industries, guides(+detail), work, FAQ, contact, about, privacy, terms
-- [ ] Empty sections hidden from menus
+- [x] Empty sections hidden from menus
+- [x] Home page (Forge concept) with published-only sections
 - [ ] Product: spec table with units, variants, availability + updated date, "contact to confirm specs" fallback
 - [ ] Arabic-aware search (normalization + synonyms + FULLTEXT), clear no-result state
 - [ ] WCAG 2.2 AA pass

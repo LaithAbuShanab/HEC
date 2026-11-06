@@ -3,12 +3,16 @@
 namespace App\Models\Concerns;
 
 use App\Domain\Catalog\Enums\ReviewStatus;
+use App\Domain\Site\SiteNavigation;
 use Illuminate\Database\Eloquent\Builder;
 
 trait HasReviewStatus
 {
     public static function bootHasReviewStatus(): void
     {
+        static::saved(fn () => SiteNavigation::flush());
+        static::deleted(fn () => SiteNavigation::flush());
+
         static::saving(function (self $model) {
             if ($model->isDirty('review_status')
                 && $model->review_status === ReviewStatus::Published

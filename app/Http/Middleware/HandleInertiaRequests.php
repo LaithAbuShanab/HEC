@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Domain\Company\CompanyProfile;
 use App\Domain\Localization\Locale;
 use App\Domain\Localization\LocalizedUrl;
+use App\Domain\Site\SiteNavigation;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -23,6 +24,8 @@ class HandleInertiaRequests extends Middleware
             'direction' => $locale->direction(),
             'alternates' => fn () => LocalizedUrl::alternates($request),
             'company' => fn () => app(CompanyProfile::class)->toArray($locale->value),
+            'nav' => fn () => app(SiteNavigation::class)->forLocale($locale->value),
+            'ui' => fn () => __('site'),
         ];
     }
 }
