@@ -112,7 +112,7 @@ class Product extends Model implements HasMedia, Translatable
 
     public function primaryCategory(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'primary_category_id');
+        return $this->belongsTo(Category::class, 'primary_category_id')->withTrashed();
     }
 
     public function categories(): BelongsToMany

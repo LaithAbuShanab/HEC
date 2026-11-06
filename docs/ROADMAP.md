@@ -8,6 +8,7 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 - [x] CLAUDE.md, ROADMAP, missing-data list
 - [x] Removed starter-kit customer accounts (out of scope §4); admin auth is Filament only
 - [x] Push to GitHub (`LaithAbuShanab/HEC`)
+- [x] Tests run on MySQL `hec_testing` with a guard against any non-testing database
 - [ ] CI (GitHub Actions): pint, phpstan, pest, tsc, build
 - [ ] Inertia SSR enabled + verified (view-source shows product content)
 - [ ] Design system: tokens from logo (gold, sky blue, navy, steel grey), Arabic/Latin fonts, motion language
@@ -23,7 +24,7 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 - [x] Seed all 43 appendix products (`database/data/catalog.json`); ambiguous → draft + missing list
 - [x] `php artisan hec:product-register` → register of the 43 items (id, location, review status)
 
-## Phase 2 — Admin (Filament)
+## Phase 2 — Admin (Filament) ✅
 - [x] Product resource (tabs: general / specs / variants / media / files / SEO / source & review), bulk availability
 - [x] Categories, units, attributes, synonyms, content resources
 - [x] Redirects resource + global redirect middleware (301/302/410, loop and chain protection)
@@ -32,7 +33,7 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 - [x] Roles admin/editor/sales (policies), MFA for admin
 - [x] Users resource (deactivate instead of delete, MFA reset), activity log viewer, trash/restore on content
 - [x] Role-based dashboard: quote stats, 30-day trend, sources, latest quotes, catalog health, products needing work, top and zero-result searches
-- [ ] CSV/XLSX import/export of products
+- [x] CSV/XLSX import/export of products (slug key, blank cell keeps value, cannot bypass publication rules)
 
 ## Phase 3 — Public frontend
 - [ ] Layout: header (search, quote CTA, language switch keeping record), footer, floating WhatsApp/call (non-blocking)
