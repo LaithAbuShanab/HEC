@@ -24,7 +24,7 @@ class SearchInsightsTable extends TableWidget
     {
         return $table
             ->heading(__('admin.dashboard.search.top'))
-            ->query(app(SearchInsights::class)->grouped(30)->limit(10))
+            ->query(app(SearchInsights::class)->ranked(30)->limit(10))
             ->paginated(false)
             ->columns([
                 TextColumn::make('query')->label(__('admin.dashboard.search.query')),

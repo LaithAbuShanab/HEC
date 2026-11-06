@@ -25,7 +25,7 @@ class ZeroResultSearchesTable extends TableWidget
         return $table
             ->heading(__('admin.dashboard.search.no_results'))
             ->description(__('admin.dashboard.search.no_results_hint'))
-            ->query(app(SearchInsights::class)->grouped(30)->havingRaw('max(results_count) = 0')->limit(10))
+            ->query(app(SearchInsights::class)->ranked(30, onlyWithoutResults: true)->limit(10))
             ->paginated(false)
             ->columns([
                 TextColumn::make('query')->label(__('admin.dashboard.search.query')),
