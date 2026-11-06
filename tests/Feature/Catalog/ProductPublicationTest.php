@@ -17,7 +17,10 @@ beforeEach(function () {
 function readyProduct(): Product
 {
     $product = Product::where('slug', 'galvanized-steel-coils')->first();
-    Category::find($product->primary_category_id)->update(['review_status' => ReviewStatus::Published]);
+    Category::find($product->primary_category_id)->update([
+        'description' => ['ar' => 'وصف التصنيف', 'en' => 'Category description'],
+        'review_status' => ReviewStatus::Published,
+    ]);
     $product->update(['short_description' => ['ar' => 'وصف مختصر', 'en' => 'Short description']]);
     $product->addMedia(UploadedFile::fake()->image('coil.jpg'))->toMediaCollection('main');
 
@@ -70,4 +73,18 @@ it('stamps the availability date only when availability actually changes', funct
 
     expect($stamped)->not->toBeNull()
         ->and($product->fresh()->availability_updated_at->equalTo($stamped))->toBeTrue();
+});
+
+it('refuses to publish a category without a bilingual description', function () {
+    $category = Category::where('slug', 'pipes-tubes')->first();
+
+    expect(fn () => $category->update(['review_status' => ReviewStatus::Published]))
+        ->toThrow(PublicationBlocked::class, 'description');
+
+    $category->update([
+        'description' => ['ar' => 'مواسير وتيوبات', 'en' => 'Pipes and tubes'],
+        'review_status' => ReviewStatus::Published,
+    ]);
+
+    expect($category->fresh()->isPublished())->toBeTrue();
 });

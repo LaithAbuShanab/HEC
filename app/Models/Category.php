@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Domain\Catalog\Enums\ReviewStatus;
+use App\Models\Concerns\HasPublicationRules;
 use App\Models\Concerns\HasReviewStatus;
 use App\Models\Contracts\Translatable;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Category extends Model implements HasMedia, Translatable
 {
-    use HasReviewStatus, HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
+    use HasPublicationRules, HasReviewStatus, HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
 
     protected $fillable = ['parent_id', 'slug', 'name', 'description', 'sort', 'review_status', 'seo'];
 
@@ -50,6 +51,11 @@ class Category extends Model implements HasMedia, Translatable
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class)->withPivot('sort');
+    }
+
+    public function publicationBlockers(): array
+    {
+        return $this->missingTranslations(['name', 'description']);
     }
 
     public function registerMediaCollections(): void

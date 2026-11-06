@@ -5,8 +5,8 @@ namespace App\Models;
 use App\Domain\Catalog\Enums\Availability;
 use App\Domain\Catalog\Enums\ProductCondition;
 use App\Domain\Catalog\Enums\ReviewStatus;
-use App\Domain\Catalog\Exceptions\PublicationBlocked;
 use App\Domain\Catalog\Support\SearchNormalizer;
+use App\Models\Concerns\HasPublicationRules;
 use App\Models\Concerns\HasReviewStatus;
 use App\Models\Contracts\Translatable;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +23,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Product extends Model implements HasMedia, Translatable
 {
-    use HasReviewStatus, HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
+    use HasPublicationRules, HasReviewStatus, HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'appendix_no', 'sku', 'slug', 'primary_category_id',
@@ -68,14 +68,6 @@ class Product extends Model implements HasMedia, Translatable
         });
 
         static::saving(function (Product $product) {
-            if ($product->isDirty('review_status') && $product->review_status === ReviewStatus::Published) {
-                $blockers = $product->publicationBlockers();
-
-                if ($blockers !== []) {
-                    throw new PublicationBlocked($blockers);
-                }
-            }
-
             $availabilityChanged = $product->exists
                 ? $product->isDirty('availability')
                 : $product->availability !== Availability::NeedsConfirmation;
@@ -92,16 +84,7 @@ class Product extends Model implements HasMedia, Translatable
 
     public function publicationBlockers(): array
     {
-        $blockers = [];
-
-        foreach (['name', 'short_description'] as $attribute) {
-            foreach (['ar', 'en'] as $locale) {
-                if (blank($this->getTranslation($attribute, $locale, false))) {
-                    $blockers[] = $attribute;
-                    break;
-                }
-            }
-        }
+        $blockers = $this->missingTranslations(['name', 'short_description']);
 
         if (! $this->media()->where('collection_name', 'main')->exists()) {
             $blockers[] = 'main_image';

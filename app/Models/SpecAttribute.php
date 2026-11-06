@@ -24,4 +24,9 @@ class SpecAttribute extends Model implements Translatable
     {
         return $this->hasMany(ProductSpecValue::class);
     }
+
+    public function usageCount(): int
+    {
+        return $this->values()->count();
+    }
 }

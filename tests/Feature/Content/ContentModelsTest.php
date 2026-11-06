@@ -34,7 +34,10 @@ it('stamps published_at the first time a record is published', function () {
 
 it('does not stamp published_at on models without the column', function () {
     $category = Category::first();
-    $category->update(['review_status' => ReviewStatus::Published]);
+    $category->update([
+        'description' => ['ar' => 'وصف', 'en' => 'Description'],
+        'review_status' => ReviewStatus::Published,
+    ]);
 
     expect($category->fresh()->isPublished())->toBeTrue();
 });
