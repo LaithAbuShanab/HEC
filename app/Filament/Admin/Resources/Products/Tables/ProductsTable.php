@@ -6,6 +6,7 @@ use App\Domain\Catalog\Enums\Availability;
 use App\Domain\Catalog\Enums\ReviewStatus;
 use App\Domain\Catalog\Exceptions\PublicationBlocked;
 use App\Domain\Catalog\Support\SearchNormalizer;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Options;
 use App\Models\Category;
 use App\Models\Product;
@@ -53,15 +54,7 @@ class ProductsTable
                     ->label(__('admin.products.fields.primary_category'))
                     ->state(fn (Product $record) => $record->primaryCategory instanceof Category ? $record->primaryCategory->getTranslation('name', 'ar') : null)
                     ->toggleable(),
-                TextColumn::make('review_status')
-                    ->label(__('admin.common.review_status'))
-                    ->badge()
-                    ->formatStateUsing(fn (ReviewStatus $state) => $state->label('ar'))
-                    ->color(fn (ReviewStatus $state) => match ($state) {
-                        ReviewStatus::Draft => 'gray',
-                        ReviewStatus::Pending => 'warning',
-                        ReviewStatus::Published => 'success',
-                    }),
+                Columns::reviewStatus(),
                 TextColumn::make('availability')
                     ->label(__('admin.products.fields.availability'))
                     ->badge()

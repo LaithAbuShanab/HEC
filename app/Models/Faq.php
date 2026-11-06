@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Domain\Catalog\Enums\ReviewStatus;
+use App\Models\Concerns\HasPublicationRules;
 use App\Models\Concerns\HasReviewStatus;
 use App\Models\Contracts\Translatable;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Faq extends Model implements Translatable
 {
-    use HasReviewStatus, HasTranslations, LogsActivity, SoftDeletes;
+    use HasPublicationRules, HasReviewStatus, HasTranslations, LogsActivity, SoftDeletes;
 
     protected $fillable = ['question', 'answer', 'group', 'show_on_home', 'review_status', 'sort'];
 
@@ -25,6 +26,11 @@ class Faq extends Model implements Translatable
             'review_status' => ReviewStatus::class,
             'show_on_home' => 'boolean',
         ];
+    }
+
+    public function publicationBlockers(): array
+    {
+        return $this->missingTranslations(['question', 'answer']);
     }
 
     public function getActivitylogOptions(): LogOptions

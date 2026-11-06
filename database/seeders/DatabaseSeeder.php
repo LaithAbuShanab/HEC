@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             SaleUnitSeeder::class,
             SpecAttributeSeeder::class,
             CatalogSeeder::class,
+            ContentSeeder::class,
         ]);
     }
 }

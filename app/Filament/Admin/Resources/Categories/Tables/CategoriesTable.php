@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\Categories\Tables;
 
 use App\Domain\Catalog\Enums\ReviewStatus;
+use App\Filament\Admin\Support\Columns;
 use App\Models\Category;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -29,15 +30,7 @@ class CategoriesTable
                     ->description(fn (Category $record) => $record->getTranslation('name', 'en', false)),
                 TextColumn::make('slug')->label(__('admin.common.slug'))->color('gray'),
                 TextColumn::make('primary_products_count')->label(__('admin.categories.fields.products_count'))->badge(),
-                TextColumn::make('review_status')
-                    ->label(__('admin.common.review_status'))
-                    ->badge()
-                    ->formatStateUsing(fn (ReviewStatus $state) => $state->label('ar'))
-                    ->color(fn (ReviewStatus $state) => match ($state) {
-                        ReviewStatus::Draft => 'gray',
-                        ReviewStatus::Pending => 'warning',
-                        ReviewStatus::Published => 'success',
-                    }),
+                Columns::reviewStatus(),
             ])
             ->filters([
                 SelectFilter::make('review_status')->label(__('admin.common.review_status'))->options(ReviewStatus::options('ar')),

@@ -1,0 +1,27 @@
+{
+  "pages": [
+    { "key": "about",   "title": { "ar": "من نحن", "en": "About HEC" } },
+    { "key": "privacy", "title": { "ar": "سياسة الخصوصية", "en": "Privacy Policy" } },
+    { "key": "terms",   "title": { "ar": "شروط استخدام الموقع والاستفسارات", "en": "Website and Enquiry Terms" } }
+  ],
+  "services": [
+    { "slug": "metal-cutting",       "title": { "ar": "قص المعادن والصاج", "en": "Metal and Sheet Cutting" } },
+    { "slug": "bending-forming",     "title": { "ar": "الثني والتشكيل", "en": "Bending and Forming" } },
+    { "slug": "cut-to-drawing",      "title": { "ar": "التفصيل حسب المخططات", "en": "Fabrication to Drawings" } },
+    { "slug": "order-preparation",   "title": { "ar": "توريد وتجهيز الطلبات", "en": "Order Supply and Preparation" } },
+    { "slug": "site-delivery",       "title": { "ar": "التوريد للموقع", "en": "Delivery to Site" } }
+  ],
+  "guides": [
+    { "slug": "request-steel-quotation",   "title": { "ar": "ما المعلومات المطلوبة للحصول على عرض سعر حديد؟", "en": "What information do you need for a steel quotation?" } },
+    { "slug": "reading-pipe-tube-sizes",   "title": { "ar": "كيف تقرأ المقاس والسماكة والطول في طلب المواسير والتيوبات؟", "en": "How to read size, wall thickness and length when ordering pipes and tubes" } },
+    { "slug": "black-oiled-galvanized-steel", "title": { "ar": "الفروق العامة بين الصاج الأسود والمزيت والمجلفن", "en": "Black, oiled and galvanized steel sheet: the general differences" } },
+    { "slug": "before-buying-industrial-equipment", "title": { "ar": "ما الذي يجب تأكيده قبل شراء معدة صناعية؟", "en": "What to confirm before buying industrial equipment" } },
+    { "slug": "preparing-cut-list",        "title": { "ar": "كيف تجهّز قائمة قص أو مخططًا لطلب تسعير؟", "en": "How to prepare a cut list or drawing for a quotation" } }
+  ],
+  "industries": [
+    { "slug": "fabrication-workshops", "title": { "ar": "ورش الحدادة والتصنيع", "en": "Fabrication Workshops" } },
+    { "slug": "contractors",           "title": { "ar": "المقاولون ومسؤولو المشتريات", "en": "Contractors and Procurement" } },
+    { "slug": "factories-maintenance", "title": { "ar": "المصانع ومسؤولو الصيانة", "en": "Factories and Maintenance Teams" } },
+    { "slug": "traders",               "title": { "ar": "التجار", "en": "Traders" } }
+  ]
+}

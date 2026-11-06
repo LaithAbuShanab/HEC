@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Domain\Catalog\Enums\ReviewStatus;
+use App\Models\Concerns\HasPublicationRules;
 use App\Models\Concerns\HasReviewStatus;
 use App\Models\Contracts\Translatable;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,7 @@ use Spatie\Translatable\HasTranslations;
 
 class WorkItem extends Model implements HasMedia, Translatable
 {
-    use HasReviewStatus, HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
+    use HasPublicationRules, HasReviewStatus, HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
 
     protected $fillable = ['slug', 'title', 'summary', 'body', 'performed_on', 'review_status', 'sort', 'seo', 'published_at'];
 
@@ -40,6 +41,17 @@ class WorkItem extends Model implements HasMedia, Translatable
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('gallery')->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/webp']);
+    }
+
+    public function publicationBlockers(): array
+    {
+        $blockers = $this->missingTranslations(['title', 'summary']);
+
+        if (! $this->media()->where('collection_name', 'gallery')->exists()) {
+            $blockers[] = 'gallery';
+        }
+
+        return $blockers;
     }
 
     public function getActivitylogOptions(): LogOptions

@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\SpecAttributes;
 
 use App\Filament\Admin\Resources\SpecAttributes\Pages\ManageSpecAttributes;
+use App\Filament\Admin\Resources\TranslatableResource;
 use App\Filament\Admin\Support\Bilingual;
 use App\Filament\Admin\Support\GuardedDelete;
 use App\Filament\Admin\Support\TranslatableActions;
@@ -11,37 +12,26 @@ use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Resources\Resource;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use UnitEnum;
 
-class SpecAttributeResource extends Resource
+class SpecAttributeResource extends TranslatableResource
 {
     protected static ?string $model = SpecAttribute::class;
+
+    protected static string $langKey = 'spec_attributes';
+
+    protected static string $navigationGroupKey = 'catalog';
+
+    protected static string $titleAttribute = 'name';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAdjustmentsHorizontal;
 
     protected static ?int $navigationSort = 4;
-
-    public static function getNavigationGroup(): string|UnitEnum|null
-    {
-        return __('admin.navigation.catalog');
-    }
-
-    public static function getModelLabel(): string
-    {
-        return __('admin.spec_attributes.label');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('admin.spec_attributes.plural');
-    }
 
     public static function form(Schema $schema): Schema
     {

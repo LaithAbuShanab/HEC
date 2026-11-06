@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Domain\Catalog\Enums\ReviewStatus;
+use App\Models\Concerns\HasPublicationRules;
 use App\Models\Concerns\HasReviewStatus;
 use App\Models\Contracts\Translatable;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Page extends Model implements Translatable
 {
-    use HasReviewStatus, HasTranslations, LogsActivity, SoftDeletes;
+    use HasPublicationRules, HasReviewStatus, HasTranslations, LogsActivity, SoftDeletes;
 
     public const KEYS = ['about', 'privacy', 'terms'];
 
@@ -28,6 +29,11 @@ class Page extends Model implements Translatable
             'seo' => 'array',
             'published_at' => 'datetime',
         ];
+    }
+
+    public function publicationBlockers(): array
+    {
+        return $this->missingTranslations(['title', 'body']);
     }
 
     public function getActivitylogOptions(): LogOptions

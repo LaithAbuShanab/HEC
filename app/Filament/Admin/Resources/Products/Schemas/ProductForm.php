@@ -4,8 +4,8 @@ namespace App\Filament\Admin\Resources\Products\Schemas;
 
 use App\Domain\Catalog\Enums\Availability;
 use App\Domain\Catalog\Enums\ProductCondition;
-use App\Domain\Catalog\Enums\ReviewStatus;
 use App\Filament\Admin\Support\Bilingual;
+use App\Filament\Admin\Support\Fields;
 use App\Filament\Admin\Support\Options;
 use App\Filament\Admin\Support\SeoFields;
 use App\Models\HistoricalSpec;
@@ -28,8 +28,6 @@ use Filament\Schemas\Schema;
 
 class ProductForm
 {
-    public const SLUG_PATTERN = '/^[a-z0-9]+(?:-[a-z0-9]+)*$/';
-
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
@@ -53,14 +51,7 @@ class ProductForm
         return Tab::make(__('admin.products.tabs.general'))->schema([
             Bilingual::fields('name', __('admin.products.fields.name'), fn (string $path) => TextInput::make($path)->maxLength(160), required: true),
             Grid::make(3)->schema([
-                TextInput::make('slug')
-                    ->label(__('admin.common.slug'))
-                    ->helperText(__('admin.common.slug_help'))
-                    ->required()
-                    ->maxLength(120)
-                    ->regex(self::SLUG_PATTERN)
-                    ->unique(ignoreRecord: true)
-                    ->extraInputAttributes(['dir' => 'ltr']),
+                Fields::slug(),
                 TextInput::make('sku')
                     ->label(__('admin.products.fields.sku'))
                     ->helperText(__('admin.products.fields.sku_help'))
@@ -87,7 +78,7 @@ class ProductForm
             ]),
             Grid::make(2)->schema([
                 Toggle::make('is_featured')->label(__('admin.products.fields.is_featured')),
-                TextInput::make('sort')->label(__('admin.common.sort'))->numeric()->minValue(0)->default(0),
+                Fields::sort(),
             ]),
         ]);
     }
@@ -206,11 +197,7 @@ class ProductForm
     private static function reviewTab(): Tab
     {
         return Tab::make(__('admin.products.tabs.review'))->schema([
-            Select::make('review_status')
-                ->label(__('admin.common.review_status'))
-                ->options(ReviewStatus::options('ar'))
-                ->default(ReviewStatus::Draft->value)
-                ->required(),
+            Fields::reviewStatus(),
             TagsInput::make('missing_fields')
                 ->label(__('admin.products.fields.missing_fields'))
                 ->helperText(__('admin.products.fields.missing_fields_help')),

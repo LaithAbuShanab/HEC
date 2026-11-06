@@ -3,41 +3,31 @@
 namespace App\Filament\Admin\Resources\SaleUnits;
 
 use App\Filament\Admin\Resources\SaleUnits\Pages\ManageSaleUnits;
+use App\Filament\Admin\Resources\TranslatableResource;
 use App\Filament\Admin\Support\Bilingual;
 use App\Filament\Admin\Support\GuardedDelete;
 use App\Filament\Admin\Support\TranslatableActions;
 use App\Models\SaleUnit;
 use BackedEnum;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use UnitEnum;
 
-class SaleUnitResource extends Resource
+class SaleUnitResource extends TranslatableResource
 {
     protected static ?string $model = SaleUnit::class;
+
+    protected static string $langKey = 'sale_units';
+
+    protected static string $navigationGroupKey = 'catalog';
+
+    protected static string $titleAttribute = 'name';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedScale;
 
     protected static ?int $navigationSort = 3;
-
-    public static function getNavigationGroup(): string|UnitEnum|null
-    {
-        return __('admin.navigation.catalog');
-    }
-
-    public static function getModelLabel(): string
-    {
-        return __('admin.sale_units.label');
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return __('admin.sale_units.plural');
-    }
 
     public static function form(Schema $schema): Schema
     {
