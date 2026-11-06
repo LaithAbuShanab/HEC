@@ -4,6 +4,7 @@ namespace App\Filament\Exports;
 
 use App\Domain\Quotes\Enums\FulfillmentMethod;
 use App\Domain\Quotes\Enums\QuoteStatus;
+use App\Filament\Admin\Support\Display;
 use App\Models\QuoteRequest;
 use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
@@ -38,7 +39,7 @@ class QuoteRequestExporter extends Exporter
                         $item->getAttribute('product_name'),
                         $item->getAttribute('thickness'),
                         '× '.$item->getAttribute('quantity'),
-                        $item->getAttribute('unit'),
+                        Display::unit($item->getAttribute('unit')),
                     ]))))
                     ->implode(' | ')),
             ExportColumn::make('notes')->label(__('admin.quotes.fields.notes')),

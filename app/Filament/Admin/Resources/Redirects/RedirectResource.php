@@ -3,7 +3,9 @@
 namespace App\Filament\Admin\Resources\Redirects;
 
 use App\Domain\Seo\RedirectRules;
+use App\Filament\Admin\Navigation\NavigationGroup;
 use App\Filament\Admin\Resources\Redirects\Pages\ManageRedirects;
+use App\Filament\Admin\Support\Display;
 use App\Models\Redirect;
 use BackedEnum;
 use Closure;
@@ -34,7 +36,7 @@ class RedirectResource extends Resource
 
     public static function getNavigationGroup(): string|UnitEnum|null
     {
-        return __('admin.navigation.seo');
+        return NavigationGroup::Seo;
     }
 
     public static function getModelLabel(): string
@@ -96,8 +98,8 @@ class RedirectResource extends Resource
         return $table
             ->defaultSort('updated_at', 'desc')
             ->columns([
-                TextColumn::make('from_path')->label(__('admin.redirects.fields.from_path'))->searchable()->extraAttributes(['dir' => 'ltr']),
-                TextColumn::make('to_path')->label(__('admin.redirects.fields.to_path'))->searchable()->placeholder('—')->extraAttributes(['dir' => 'ltr']),
+                TextColumn::make('from_path')->label(__('admin.redirects.fields.from_path'))->searchable()->formatStateUsing(fn (?string $state) => Display::ltr($state)),
+                TextColumn::make('to_path')->label(__('admin.redirects.fields.to_path'))->searchable()->placeholder('—')->formatStateUsing(fn (?string $state) => Display::ltr($state)),
                 TextColumn::make('status_code')
                     ->label(__('admin.redirects.fields.status_code'))
                     ->badge()

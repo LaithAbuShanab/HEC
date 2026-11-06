@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Navigation\NavigationGroup;
+use App\Support\BrandColors;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -11,7 +13,6 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -40,12 +41,13 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('favicon-32x32.png'))
             ->font('IBM Plex Sans Arabic')
             ->colors([
-                'primary' => Color::hex('#3C6CA8'),
-                'info' => Color::hex('#4CA3D6'),
-                'warning' => Color::hex('#E4B42A'),
+                'primary' => BrandColors::palette(BrandColors::BLUE),
+                'info' => Color::Sky,
+                'warning' => BrandColors::palette(BrandColors::GOLD),
                 'gray' => Color::Slate,
             ])
             ->sidebarCollapsibleOnDesktop()
+            ->navigationGroups(NavigationGroup::class)
             ->databaseNotifications()
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
@@ -53,9 +55,7 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\Filament\Admin\Widgets')
-            ->widgets([
-                AccountWidget::class,
-            ])
+            ->widgets([])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

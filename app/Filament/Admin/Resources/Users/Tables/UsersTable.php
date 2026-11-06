@@ -3,8 +3,10 @@
 namespace App\Filament\Admin\Resources\Users\Tables;
 
 use App\Domain\Access\Role;
+use App\Filament\Admin\Support\Display;
 use App\Models\User;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
@@ -22,7 +24,7 @@ class UsersTable
             ->defaultSort('name')
             ->columns([
                 TextColumn::make('name')->label(__('admin.users.fields.name'))->searchable()->sortable(),
-                TextColumn::make('email')->label(__('admin.users.fields.email'))->searchable()->extraAttributes(['dir' => 'ltr']),
+                TextColumn::make('email')->label(__('admin.users.fields.email'))->searchable()->formatStateUsing(fn (?string $state) => Display::ltr($state)),
                 TextColumn::make('role')
                     ->label(__('admin.users.fields.role'))
                     ->badge()
@@ -51,19 +53,21 @@ class UsersTable
             ])
             ->recordActions([
                 EditAction::make(),
-                Action::make('resetMfa')
-                    ->label(__('admin.users.actions.reset_mfa'))
-                    ->icon('heroicon-o-key')
-                    ->color('warning')
-                    ->requiresConfirmation()
-                    ->modalDescription(__('admin.users.actions.reset_mfa_help'))
-                    ->visible(fn (User $record) => filled($record->getAppAuthenticationSecret()))
-                    ->action(function (User $record) {
-                        $record->saveAppAuthenticationSecret(null);
-                        $record->saveAppAuthenticationRecoveryCodes(null);
+                ActionGroup::make([
+                    Action::make('resetMfa')
+                        ->label(__('admin.users.actions.reset_mfa'))
+                        ->icon('heroicon-o-key')
+                        ->color('warning')
+                        ->requiresConfirmation()
+                        ->modalDescription(__('admin.users.actions.reset_mfa_help'))
+                        ->visible(fn (User $record) => filled($record->getAppAuthenticationSecret()))
+                        ->action(function (User $record) {
+                            $record->saveAppAuthenticationSecret(null);
+                            $record->saveAppAuthenticationRecoveryCodes(null);
 
-                        Notification::make()->success()->title(__('admin.users.actions.reset_mfa_done'))->send();
-                    }),
+                            Notification::make()->success()->title(__('admin.users.actions.reset_mfa_done'))->send();
+                        }),
+                ]),
             ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\Navigation\NavigationGroup;
 use App\Models\Contracts\Translatable;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,7 +20,7 @@ abstract class TranslatableResource extends Resource
 
     public static function getNavigationGroup(): string|UnitEnum|null
     {
-        return __('admin.navigation.'.static::$navigationGroupKey);
+        return NavigationGroup::from(static::$navigationGroupKey);
     }
 
     public static function getModelLabel(): string

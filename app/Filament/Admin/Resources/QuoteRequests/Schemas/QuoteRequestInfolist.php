@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\QuoteRequests\Schemas;
 use App\Domain\Quotes\Enums\FulfillmentMethod;
 use App\Domain\Quotes\Enums\NotificationStatus;
 use App\Domain\Quotes\Enums\QuoteStatus;
+use App\Filament\Admin\Support\Display;
 use App\Models\QuoteAttachment;
 use App\Models\QuoteRequest;
 use Filament\Infolists\Components\RepeatableEntry;
@@ -24,10 +25,10 @@ class QuoteRequestInfolist
             Grid::make(3)->columnSpanFull()->schema([
                 Section::make(__('admin.quotes.sections.customer'))->columnSpan(2)->columns(3)->schema([
                     TextEntry::make('name')->label(__('admin.quotes.fields.name')),
-                    TextEntry::make('phone')->label(__('admin.quotes.fields.phone'))->copyable()->extraAttributes(['dir' => 'ltr']),
+                    TextEntry::make('phone')->label(__('admin.quotes.fields.phone'))->copyable()->formatStateUsing(fn (?string $state) => Display::ltr($state)),
                     TextEntry::make('city')->label(__('admin.quotes.fields.city')),
                     TextEntry::make('company')->label(__('admin.quotes.fields.company'))->placeholder('—'),
-                    TextEntry::make('email')->label(__('admin.quotes.fields.email'))->placeholder('—')->copyable(),
+                    TextEntry::make('email')->label(__('admin.quotes.fields.email'))->placeholder('—')->copyable()->formatStateUsing(fn (?string $state) => Display::ltr($state)),
                     TextEntry::make('locale')->label(__('admin.quotes.fields.locale'))
                         ->formatStateUsing(fn (string $state) => __("admin.locales.{$state}")),
                 ]),
@@ -56,7 +57,7 @@ class QuoteRequestInfolist
                 TextEntry::make('needed_by')->label(__('admin.quotes.fields.needed_by'))->date('Y-m-d')
                     ->placeholder('—')->helperText(__('admin.quotes.fields.needed_by_help')),
                 TextEntry::make('source')->label(__('admin.quotes.fields.source'))
-                    ->state(fn (QuoteRequest $record) => collect($record->source ?? [])->filter()->map(fn ($value, $key) => "{$key}: {$value}")->values()->all())
+                    ->state(fn (QuoteRequest $record) => collect($record->source ?? [])->filter()->map(fn ($value, $key) => Display::sourceLine((string) $key, (string) $value))->values()->all())
                     ->listWithLineBreaks()
                     ->placeholder('—'),
                 TextEntry::make('notes')->label(__('admin.quotes.fields.notes'))->placeholder('—')->columnSpanFull(),
@@ -77,11 +78,11 @@ class QuoteRequestInfolist
                         ->badge(fn ($record) => (bool) $record->is_custom)
                         ->color(fn ($record) => $record->is_custom ? 'warning' : null)
                         ->tooltip(fn ($record) => $record->is_custom ? __('admin.quotes.fields.custom_item') : null),
-                    TextEntry::make('variant_label')->placeholder('—'),
-                    TextEntry::make('thickness')->placeholder('—'),
-                    TextEntry::make('dimensions')->placeholder('—'),
-                    TextEntry::make('quantity')->numeric(decimalPlaces: 0)->placeholder('—'),
-                    TextEntry::make('unit')->placeholder('—'),
+                    TextEntry::make('variant_label')->placeholder('—')->formatStateUsing(fn (?string $state) => Display::ltr($state)),
+                    TextEntry::make('thickness')->placeholder('—')->formatStateUsing(fn (?string $state) => Display::ltr($state)),
+                    TextEntry::make('dimensions')->placeholder('—')->formatStateUsing(fn (?string $state) => Display::ltr($state)),
+                    TextEntry::make('quantity')->placeholder('—')->formatStateUsing(fn (mixed $state) => Display::quantity($state)),
+                    TextEntry::make('unit')->placeholder('—')->formatStateUsing(fn (?string $state) => Display::unit($state)),
                     TextEntry::make('notes')->placeholder('—'),
                 ]),
             ]),

@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\Products\Schemas;
 use App\Domain\Catalog\Enums\Availability;
 use App\Domain\Catalog\Enums\ProductCondition;
 use App\Filament\Admin\Support\Bilingual;
+use App\Filament\Admin\Support\Display;
 use App\Filament\Admin\Support\Fields;
 use App\Filament\Admin\Support\Options;
 use App\Filament\Admin\Support\SeoFields;
@@ -15,7 +16,6 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -198,9 +198,12 @@ class ProductForm
     {
         return Tab::make(__('admin.products.tabs.review'))->schema([
             Fields::reviewStatus(),
-            TagsInput::make('missing_fields')
+            Select::make('missing_fields')
                 ->label(__('admin.products.fields.missing_fields'))
-                ->helperText(__('admin.products.fields.missing_fields_help')),
+                ->helperText(__('admin.products.fields.missing_fields_help'))
+                ->multiple()
+                ->searchable()
+                ->options(fn (?Product $record) => Display::knownMissingFields() + collect($record instanceof Product ? (array) $record->missing_fields : [])->mapWithKeys(fn (string $key) => [$key => Display::missingField($key)])->all()),
             Grid::make(2)->schema([
                 Textarea::make('source_reference')->label(__('admin.products.fields.source_reference'))->rows(2),
                 DatePicker::make('source_reviewed_at')->label(__('admin.products.fields.source_reviewed_at')),

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Users;
 
+use App\Filament\Admin\Navigation\NavigationGroup;
 use App\Filament\Admin\Resources\Users\Pages\CreateUser;
 use App\Filament\Admin\Resources\Users\Pages\EditUser;
 use App\Filament\Admin\Resources\Users\Pages\ListUsers;
@@ -29,7 +30,7 @@ class UserResource extends Resource
 
     public static function getNavigationGroup(): string|UnitEnum|null
     {
-        return __('admin.navigation.system');
+        return NavigationGroup::System;
     }
 
     public static function getModelLabel(): string

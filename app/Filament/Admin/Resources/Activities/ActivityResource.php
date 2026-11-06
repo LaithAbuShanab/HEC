@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Activities;
 
+use App\Filament\Admin\Navigation\NavigationGroup;
 use App\Filament\Admin\Resources\Activities\Pages\ListActivities;
 use App\Models\Category;
 use App\Models\Contracts\Translatable;
@@ -24,6 +25,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\HtmlString;
 use Spatie\Activitylog\Models\Activity;
 use UnitEnum;
@@ -51,7 +53,7 @@ class ActivityResource extends Resource
 
     public static function getNavigationGroup(): string|UnitEnum|null
     {
-        return __('admin.navigation.system');
+        return NavigationGroup::System;
     }
 
     public static function getModelLabel(): string
@@ -114,7 +116,7 @@ class ActivityResource extends Resource
                     ->description(fn (Activity $record) => self::subjectTitle($record)),
                 TextColumn::make('changed_fields')
                     ->label(__('admin.activity.fields.changes'))
-                    ->state(fn (Activity $record) => implode('، ', array_keys(self::changes($record)['attributes'])))
+                    ->state(fn (Activity $record) => implode('، ', array_map(fn (int|string $field) => self::fieldLabel($record, (string) $field), array_keys(self::changes($record)['attributes']))))
                     ->limit(60)
                     ->color('gray'),
             ])
@@ -157,6 +159,27 @@ class ActivityResource extends Resource
         };
     }
 
+    public static function fieldLabel(Activity $activity, string $field): string
+    {
+        $section = self::SUBJECTS[$activity->subject_type] ?? null;
+
+        $candidates = array_filter([
+            $section ? "admin.{$section}.fields.{$field}" : null,
+            "admin.content.fields.{$field}",
+            "admin.products.fields.{$field}",
+            "admin.common.{$field}",
+            "admin.quotes.fields.{$field}",
+        ]);
+
+        foreach ($candidates as $key) {
+            if (Lang::has($key)) {
+                return __($key);
+            }
+        }
+
+        return str_replace('_', ' ', $field);
+    }
+
     private static function translatableTitle(Translatable $subject): ?string
     {
         $attribute = collect(['name', 'title', 'question'])->first(fn (string $key) => in_array($key, $subject->getTranslatableAttributes(), true));
@@ -172,7 +195,7 @@ class ActivityResource extends Resource
         foreach ($changes['attributes'] as $field => $new) {
             $rows .= sprintf(
                 '<tr class="border-t"><td class="p-2 font-medium">%s</td><td class="p-2 text-danger-600">%s</td><td class="p-2 text-success-600">%s</td></tr>',
-                e((string) $field),
+                e(self::fieldLabel($activity, (string) $field)),
                 e(self::display($changes['old'][$field] ?? null)),
                 e(self::display($new)),
             );

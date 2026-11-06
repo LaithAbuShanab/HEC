@@ -166,7 +166,7 @@ describe('activity log', function () {
         Livewire::test(ListActivities::class)
             ->filterTable('causer_id', $editor->id)
             ->assertCanSeeTableRecords([$activity])
-            ->assertTableColumnStateSet('changed_fields', 'sort', $activity)
+            ->assertTableColumnStateSet('changed_fields', __('admin.products.fields.sort'), $activity)
             ->assertActionDoesNotExist(TestAction::make('edit')->table($activity));
     });
 });

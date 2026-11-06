@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Pages;
 
 use App\Domain\Shared\Support\PhoneNumber;
+use App\Filament\Admin\Navigation\NavigationGroup;
 use App\Filament\Admin\Support\Bilingual;
 use App\Models\User;
 use App\Settings\CompanySettings;
@@ -32,7 +33,7 @@ class ManageCompany extends SettingsPage
 
     public static function getNavigationGroup(): string|UnitEnum|null
     {
-        return __('admin.navigation.system');
+        return NavigationGroup::System;
     }
 
     public static function getNavigationLabel(): string

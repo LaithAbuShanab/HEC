@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\SearchSynonyms;
 
+use App\Filament\Admin\Navigation\NavigationGroup;
 use App\Filament\Admin\Resources\SearchSynonyms\Pages\ManageSearchSynonyms;
 use App\Models\SearchSynonym;
 use BackedEnum;
@@ -26,7 +27,7 @@ class SearchSynonymResource extends Resource
 
     public static function getNavigationGroup(): string|UnitEnum|null
     {
-        return __('admin.navigation.catalog');
+        return NavigationGroup::Catalog;
     }
 
     public static function getModelLabel(): string

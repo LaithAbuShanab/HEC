@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\QuoteRequests;
 
 use App\Domain\Quotes\Enums\QuoteStatus;
+use App\Filament\Admin\Navigation\NavigationGroup;
 use App\Filament\Admin\Resources\QuoteRequests\Pages\ListQuoteRequests;
 use App\Filament\Admin\Resources\QuoteRequests\Pages\ViewQuoteRequest;
 use App\Filament\Admin\Resources\QuoteRequests\Schemas\QuoteRequestInfolist;
@@ -30,7 +31,7 @@ class QuoteRequestResource extends Resource
 
     public static function getNavigationGroup(): string|UnitEnum|null
     {
-        return __('admin.navigation.sales');
+        return NavigationGroup::Sales;
     }
 
     public static function getModelLabel(): string

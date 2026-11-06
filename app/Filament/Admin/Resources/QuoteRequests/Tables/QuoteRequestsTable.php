@@ -6,6 +6,7 @@ use App\Domain\Quotes\Enums\NotificationStatus;
 use App\Domain\Quotes\Enums\QuoteStatus;
 use App\Filament\Admin\Resources\QuoteRequests\Actions\QuoteActions;
 use App\Filament\Admin\Resources\QuoteRequests\Schemas\QuoteRequestInfolist;
+use App\Filament\Admin\Support\Display;
 use App\Filament\Exports\QuoteRequestExporter;
 use App\Models\QuoteRequest;
 use Filament\Actions\ActionGroup;
@@ -40,7 +41,7 @@ class QuoteRequestsTable
                 TextColumn::make('phone')
                     ->label(__('admin.quotes.fields.phone'))
                     ->searchable()
-                    ->extraAttributes(['dir' => 'ltr']),
+                    ->formatStateUsing(fn (?string $state) => Display::ltr($state)),
                 TextColumn::make('city')->label(__('admin.quotes.fields.city'))->toggleable(),
                 TextColumn::make('items_count')->label(__('admin.quotes.fields.items_count'))->badge()->color('gray'),
                 TextColumn::make('status')

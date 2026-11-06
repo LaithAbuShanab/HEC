@@ -6,6 +6,7 @@ use App\Domain\Access\Role;
 use App\Domain\Catalog\Enums\ReviewStatus;
 use App\Filament\Admin\Resources\Products\ProductResource;
 use App\Filament\Admin\Support\Columns;
+use App\Filament\Admin\Support\Display;
 use App\Filament\Admin\Widgets\Concerns\VisibleToRoles;
 use App\Models\Product;
 use Filament\Tables\Columns\TextColumn;
@@ -48,6 +49,7 @@ class ProductsNeedingAttentionTable extends TableWidget
                     ->color('danger'),
                 TextColumn::make('missing_fields')
                     ->label(__('admin.dashboard.catalog.missing'))
+                    ->state(fn (Product $record) => Display::missingFields($record->missing_fields))
                     ->badge()
                     ->color('warning')
                     ->limitList(3),

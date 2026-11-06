@@ -27,7 +27,7 @@ final class ContentTable
             ->columns([
                 ...$columns,
                 Columns::translated('title'),
-                TextColumn::make('slug')->label(__('admin.common.slug'))->color('gray')->toggleable(),
+                TextColumn::make('slug')->label(__('admin.common.slug'))->color('gray')->toggleable()->formatStateUsing(fn (?string $state) => Display::ltr($state)),
                 ...$extraColumns,
                 Columns::reviewStatus(),
                 Columns::updatedAt(),
