@@ -52,10 +52,10 @@ class VariantsRelationManager extends RelationManager
                     ->maxLength(40),
             ]),
             Grid::make(4)->columnSpanFull()->schema([
-                TextInput::make('thickness_mm')->label(__('admin.variants.fields.thickness_mm'))->numeric()->minValue(0),
-                TextInput::make('width_mm')->label(__('admin.variants.fields.width_mm'))->numeric()->minValue(0),
-                TextInput::make('length_mm')->label(__('admin.variants.fields.length_mm'))->numeric()->minValue(0),
-                TextInput::make('diameter_mm')->label(__('admin.variants.fields.diameter_mm'))->numeric()->minValue(0),
+                TextInput::make('thickness_mm')->label(__('admin.variants.fields.thickness_mm'))->numeric()->minValue(0)->suffix('mm'),
+                TextInput::make('width_mm')->label(__('admin.variants.fields.width_mm'))->numeric()->minValue(0)->suffix('mm'),
+                TextInput::make('length_mm')->label(__('admin.variants.fields.length_mm'))->numeric()->minValue(0)->suffix('mm'),
+                TextInput::make('diameter_mm')->label(__('admin.variants.fields.diameter_mm'))->numeric()->minValue(0)->suffix('mm'),
             ]),
             Grid::make(3)->columnSpanFull()->schema([
                 Select::make('sale_unit_id')->label(__('admin.products.fields.sale_unit'))->options(Options::saleUnits()),

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Domain\Access\Role;
+use App\Http\Middleware\SetPanelLocale;
 use App\Models\Category;
 use App\Models\Faq;
 use App\Models\Guide;
@@ -44,7 +45,12 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(Login::class, function (Login $event) {
             if ($event->user instanceof User) {
-                $event->user->forceFill(['last_login_at' => now()])->saveQuietly();
+                $chosen = session()->get(SetPanelLocale::SESSION_KEY);
+
+                $event->user->forceFill(array_filter([
+                    'last_login_at' => now(),
+                    'locale' => is_string($chosen) ? $chosen : null,
+                ]))->saveQuietly();
             }
         });
     }

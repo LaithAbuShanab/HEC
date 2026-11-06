@@ -16,6 +16,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductResource extends TranslatableResource
 {
@@ -30,6 +31,33 @@ class ProductResource extends TranslatableResource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCube;
 
     protected static ?int $navigationSort = 1;
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['search_text_ar', 'search_text_en', 'slug'];
+    }
+
+    protected static function applyGlobalSearchAttributeConstraints(Builder $query, string $search): void
+    {
+        ProductsTable::search($query, $search);
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        return $record instanceof Product ? (string) $record->getTranslation('name', app()->getLocale()) : '';
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        if (! $record instanceof Product) {
+            return [];
+        }
+
+        return array_filter([
+            __('admin.products.fields.appendix_no') => $record->appendix_no,
+            __('admin.common.review_status') => $record->review_status->label(),
+        ]);
+    }
 
     public static function form(Schema $schema): Schema
     {

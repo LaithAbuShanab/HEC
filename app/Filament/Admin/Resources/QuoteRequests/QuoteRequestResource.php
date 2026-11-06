@@ -61,6 +61,23 @@ class QuoteRequestResource extends Resource
         return $record instanceof QuoteRequest ? (string) $record->reference : '';
     }
 
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['reference', 'name', 'phone', 'company'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        if (! $record instanceof QuoteRequest) {
+            return [];
+        }
+
+        return array_filter([
+            __('admin.quotes.fields.name') => $record->name,
+            __('admin.quotes.fields.status') => $record->status->label(),
+        ]);
+    }
+
     public static function infolist(Schema $schema): Schema
     {
         return QuoteRequestInfolist::configure($schema);

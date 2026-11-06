@@ -49,7 +49,7 @@ class AdminPanelProvider extends PanelProvider
                 'gray' => Color::Slate,
             ])
             ->sidebarCollapsibleOnDesktop()
-            ->navigationGroups(NavigationGroup::class)
+            ->navigationGroups(NavigationGroup::registrations())
             ->databaseNotifications()
             ->renderHook(PanelsRenderHook::USER_MENU_BEFORE, fn () => view('filament.admin.locale-switch'))
             ->renderHook(PanelsRenderHook::SIMPLE_PAGE_START, fn () => view('filament.admin.locale-switch-simple'))

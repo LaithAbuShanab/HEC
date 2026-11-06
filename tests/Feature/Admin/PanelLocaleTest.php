@@ -5,6 +5,7 @@ use App\Filament\Admin\Resources\Products\Pages\ListProducts;
 use App\Models\Product;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
+use Illuminate\Auth\Events\Login;
 use Livewire\Livewire;
 
 beforeEach(fn () => $this->seed(DatabaseSeeder::class));
@@ -32,7 +33,13 @@ it('switches the language from the top bar and remembers it', function () {
 
     expect($user->fresh()->locale)->toBe('en');
 
-    $this->actingAs($user->fresh())->get('/admin/products')->assertSee('lang="en"', false)->assertSee('Products');
+    $this->actingAs($user->fresh())->get('/admin/products')
+        ->assertSee('lang="en"', false)
+        ->assertSee('Products')
+        ->assertSee('Catalog')
+        ->assertSee('Content')
+        ->assertDontSee('الكتالوج')
+        ->assertDontSee('المحتوى');
 });
 
 it('shows the switch on every panel page and on the login screen', function () {
@@ -65,4 +72,14 @@ it('renders labels, statuses and record names in the selected language', functio
         ->assertSee('Pending approval')
         ->assertSee('Needs confirmation')
         ->assertTableColumnStateSet('name', 'Galvanized Steel Coils', $product);
+});
+
+it('keeps the language chosen on the login screen after signing in', function () {
+    $user = panelUser('ar');
+
+    $this->post('/admin/locale/en');
+    event(new Login('web', $user, false));
+
+    expect($user->fresh()->locale)->toBe('en');
+    $this->actingAs($user->fresh())->get('/admin')->assertSee('lang="en"', false);
 });

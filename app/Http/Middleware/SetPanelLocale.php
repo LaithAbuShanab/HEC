@@ -16,7 +16,7 @@ class SetPanelLocale
     {
         $user = $request->user();
 
-        $preferred = $user instanceof User ? $user->locale : $request->session()->get(self::SESSION_KEY);
+        $preferred = $request->session()->get(self::SESSION_KEY) ?? ($user instanceof User ? $user->locale : null);
 
         app()->setLocale((Locale::tryFrom((string) $preferred) ?? Locale::Arabic)->value);
 

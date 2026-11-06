@@ -35,6 +35,16 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 - [x] Role-based dashboard: quote stats, 30-day trend, sources, latest quotes, catalog health, products needing work, top and zero-result searches
 - [x] CSV/XLSX import/export of products (slug key, blank cell keeps value, cannot bypass publication rules)
 
+## Phase 2 review ✅
+- [x] Composite indexes for listings, media lookups, quote queues and search insights (verified with EXPLAIN, rollback-safe)
+- [x] N+1 removed, per-request option caching, query budget tests for key screens
+- [x] MFA enforced for all staff (the per-role closure was never applied by Filament)
+- [x] Brand palette built by hand (Filament's generated 600 shade was too light)
+- [x] Navigation order: Sales, Catalog, Content, SEO, System
+- [x] Arabic/English panel with per-user language switch, full EN translation with parity test
+- [x] LTR values isolated with <bdi> (emails, phones, sizes, paths), readable labels instead of raw keys
+- [x] Auto slug from English name, SEO character counters, unit suffixes, global search for products and quotes
+
 ## Phase 3 — Public frontend
 - [ ] Layout: header (search, quote CTA, language switch keeping record), footer, floating WhatsApp/call (non-blocking)
 - [ ] Pages: home, products, category (+filters), product, services(+detail), industries, guides(+detail), work, FAQ, contact, about, privacy, terms

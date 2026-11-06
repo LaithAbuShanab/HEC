@@ -124,7 +124,7 @@ class ProductsTable
             ]);
     }
 
-    private static function search(Builder $query, string $search): Builder
+    public static function search(Builder $query, string $search): Builder
     {
         $term = SearchNormalizer::normalize($search);
 

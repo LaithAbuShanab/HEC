@@ -24,6 +24,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class ProductForm
@@ -49,7 +50,7 @@ class ProductForm
     private static function generalTab(): Tab
     {
         return Tab::make(__('admin.products.tabs.general'))->schema([
-            Bilingual::fields('name', __('admin.products.fields.name'), fn (string $path) => TextInput::make($path)->maxLength(160), required: true),
+            Bilingual::fields('name', __('admin.products.fields.name'), fn (string $path) => TextInput::make($path)->maxLength(160), required: true, fillsSlug: true),
             Grid::make(3)->schema([
                 Fields::slug(),
                 TextInput::make('sku')
@@ -155,6 +156,7 @@ class ProductForm
             Grid::make(2)->schema([
                 TextInput::make('price')
                     ->label(__('admin.products.fields.price'))
+                    ->suffix(fn (Get $get) => $get('price_currency') ?: 'JOD')
                     ->helperText(__('admin.products.fields.price_help'))
                     ->numeric()
                     ->minValue(0.001),

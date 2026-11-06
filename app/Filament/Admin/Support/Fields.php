@@ -44,7 +44,7 @@ final class Fields
 
     public static function title(string $name = 'title', ?string $label = null, int $max = 160): Grid
     {
-        return Bilingual::fields($name, $label ?? __("admin.content.fields.{$name}"), fn (string $path) => TextInput::make($path)->maxLength($max), required: true);
+        return Bilingual::fields($name, $label ?? __("admin.content.fields.{$name}"), fn (string $path) => TextInput::make($path)->maxLength($max), required: true, fillsSlug: true);
     }
 
     public static function text(string $name, int $rows = 3, int $max = 600, ?string $label = null): Grid
