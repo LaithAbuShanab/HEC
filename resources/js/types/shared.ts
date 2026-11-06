@@ -37,7 +37,7 @@ export type NavCategory = {
 
 export type SiteNav = {
     categories: NavCategory[];
-    sections: Record<'services' | 'industries' | 'guides' | 'work' | 'faq' | 'about', boolean>;
+    sections: Record<'services' | 'industries' | 'guides' | 'work' | 'faq' | 'about' | 'privacy' | 'terms', boolean>;
 };
 
 export type HowStep = {
@@ -62,6 +62,8 @@ export type SiteStrings = {
     filters: Record<string, string>;
     catalog: Record<string, string>;
     search: Record<string, string>;
+    content: Record<string, string>;
+    errors: Record<string, { title: string; body: string }> & { home: string };
 };
 
 export type SharedProps = {

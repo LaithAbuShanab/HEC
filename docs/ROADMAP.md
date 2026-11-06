@@ -47,11 +47,13 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 
 ## Phase 3 — Public frontend
 - [x] Layout: header (search, quote CTA, language switch keeping record), footer, floating WhatsApp/call (non-blocking)
-- [ ] Pages: home, products, category (+filters), product, services(+detail), industries, guides(+detail), work, FAQ, contact, about, privacy, terms
+- [x] Pages: home, products, category (+filters), product, services(+detail), industries, guides(+detail), work, FAQ, contact, about, privacy, terms
 - [x] Empty sections hidden from menus
 - [x] Home page (Forge concept) with published-only sections
-- [ ] Product: spec table with units, variants, availability + updated date, "contact to confirm specs" fallback
-- [ ] Arabic-aware search (normalization + synonyms + FULLTEXT), clear no-result state
+- [x] Branded 404/410/500 pages in the URL language
+- [x] WebP image sizes, sanitized rich text, per-page SEO (canonical, hreflang, JSON-LD)
+- [x] Product: spec table with units, variants, availability + updated date, "contact to confirm specs" fallback
+- [x] Arabic-aware search (normalization + synonyms + FULLTEXT), clear no-result state
 - [ ] WCAG 2.2 AA pass
 
 ## Phase 4 — Request for quote

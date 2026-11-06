@@ -391,3 +391,10 @@
         text-align: start;
     }
 }
+
+:lang(ar) .font-display,
+:lang(ar) .stamp,
+[lang='ar'] .font-display,
+[lang='ar'] .stamp {
+    font-family: var(--font-sans);
+}

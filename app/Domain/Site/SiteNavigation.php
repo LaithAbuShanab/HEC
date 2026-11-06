@@ -56,6 +56,8 @@ final class SiteNavigation
                 'work' => WorkItem::published()->exists(),
                 'faq' => Faq::published()->exists(),
                 'about' => Page::published()->where('key', 'about')->exists(),
+                'privacy' => Page::published()->where('key', 'privacy')->exists(),
+                'terms' => Page::published()->where('key', 'terms')->exists(),
             ],
         ];
     }

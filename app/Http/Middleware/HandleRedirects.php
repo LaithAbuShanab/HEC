@@ -34,7 +34,7 @@ class HandleRedirects
         Redirect::recordHit($match['id']);
 
         if ($match['status'] === 410) {
-            return response('', 410, ['X-Robots-Tag' => 'noindex']);
+            abort(410);
         }
 
         $query = $request->getQueryString();

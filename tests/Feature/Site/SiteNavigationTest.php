@@ -22,7 +22,7 @@ it('hides sections that have no published content', function () {
     $nav = app(SiteNavigation::class)->forLocale('ar');
 
     expect($nav['categories'])->toBe([])
-        ->and($nav['sections'])->toBe(['services' => false, 'industries' => false, 'guides' => false, 'work' => false, 'faq' => false, 'about' => false]);
+        ->and($nav['sections'])->toBe(['services' => false, 'industries' => false, 'guides' => false, 'work' => false, 'faq' => false, 'about' => false, 'privacy' => false, 'terms' => false]);
 });
 
 it('lists published categories with their published product counts', function () {

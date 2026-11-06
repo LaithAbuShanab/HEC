@@ -20,8 +20,8 @@ export function SiteFooter() {
         { href: localized(locale, 'about'), label: ui.nav.about, visible: nav.sections.about },
         { href: localized(locale, 'contact'), label: ui.nav.contact, visible: true },
         { href: localized(locale, 'request-quote'), label: ui.actions.request_quote, visible: true },
-        { href: localized(locale, 'privacy'), label: ui.nav.privacy, visible: true },
-        { href: localized(locale, 'terms'), label: ui.nav.terms, visible: true },
+        { href: localized(locale, 'privacy'), label: ui.nav.privacy, visible: nav.sections.privacy },
+        { href: localized(locale, 'terms'), label: ui.nav.terms, visible: nav.sections.terms },
     ].filter((link) => link.visible);
 
     return (
