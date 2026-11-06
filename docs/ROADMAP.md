@@ -27,7 +27,7 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 - [x] Product resource (tabs: general / specs / variants / media / files / SEO / source & review), bulk availability
 - [x] Categories, units, attributes, synonyms, content resources
 - [ ] Redirects resource
-- [ ] Company settings page (phones, WhatsApp, email, address, map, hours, socials)
+- [x] Company settings page (phones, WhatsApp, email, address, map, hours, socials) with per-field client confirmation
 - [x] Quote requests: status workflow, internal notes, signed attachment download, export (permission-gated)
 - [x] Roles admin/editor/sales (policies), MFA for admin
 - [ ] Users resource, activity log viewer, trash/restore
