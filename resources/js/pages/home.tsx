@@ -1,11 +1,14 @@
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, ArrowRight, Ruler, Send, ShoppingBasket } from 'lucide-react';
+import { ArrowLeft, ArrowRight, FileUp, Layers, MessageCircle, Ruler, Send, ShoppingBasket } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useRef } from 'react';
 import type { ReactNode } from 'react';
+import { CaliperMarks } from '@/components/site/caliper-marks';
 import { CategoryGlyph } from '@/components/site/category-glyph';
+import { HeroSearch } from '@/components/site/hero-search';
 import { LaserText } from '@/components/site/laser-text';
 import { LogoReveal } from '@/components/site/logo-reveal';
+import { QuoteLinePreview } from '@/components/site/quote-line-preview';
 import { SparkField } from '@/components/site/spark-field';
 import { SteelCoil } from '@/components/site/steel-coil';
 import { useSite } from '@/hooks/use-site';
@@ -20,6 +23,7 @@ type WorkCard = { slug: string; title: string; image: string | null };
 type FaqItem = { question: string; answer: string };
 
 type HomeProps = {
+    stats: { categories: number; products: number };
     categories: CategoryCard[];
     featured: ProductCard[];
     services: ServiceCard[];
@@ -35,11 +39,12 @@ const reveal = {
     transition: { duration: 0.7, ease: [0.2, 0.8, 0.2, 1] },
 } as const;
 
-export default function Home({ categories, featured, services, industries, work, faqs }: HomeProps) {
+export default function Home({ stats, categories, featured, services, industries, work, faqs }: HomeProps) {
     const { locale, ui, company } = useSite();
     const hero = useRef<HTMLElement>(null);
     const Arrow = locale === 'ar' ? ArrowLeft : ArrowRight;
     const stepIcons = [ShoppingBasket, Ruler, Send];
+    const pointIcons = [Layers, FileUp, MessageCircle];
 
     return (
         <SiteLayout>
@@ -48,17 +53,29 @@ export default function Home({ categories, featured, services, industries, work,
             <section ref={hero} className="steel-texture relative isolate overflow-hidden pt-(--header-height) text-white">
                 <div aria-hidden className="blueprint-grid absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,#000_30%,transparent_75%)]" />
                 <SparkField className="absolute inset-0 -z-10 size-full" />
-                <div className="mx-auto grid min-h-[calc(100svh-var(--header-height))] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:px-8">
+                <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pt-12 pb-10 sm:px-6 lg:min-h-[calc(100svh-var(--header-height)-7rem)] lg:grid-cols-[1.1fr_1fr] lg:px-8">
                     <div className="max-w-2xl">
-                        <div className="mb-8 flex items-center gap-4">
+                        <div className="mb-8 flex flex-wrap items-center gap-4">
                             <LogoReveal label={company.name} variant="white" className="size-14" />
-                            <p className="stamp text-xs text-steel-300 uppercase">{ui.home.eyebrow}</p>
+                            <div>
+                                <p className="stamp text-xs text-steel-300 uppercase">{ui.home.eyebrow}</p>
+                                {company.address && <p className="mt-1 text-xs text-steel-400">{company.address}</p>}
+                            </div>
+                            {stats.categories > 0 && (
+                                <div className="ms-auto hidden items-center gap-5 border-s border-white/10 ps-5 sm:flex">
+                                    <Stat value={stats.categories} label={ui.home.stat_categories} />
+                                    {stats.products > 0 && <Stat value={stats.products} label={ui.home.stat_products} />}
+                                </div>
+                            )}
                         </div>
                         <h1 className="font-display text-4xl leading-[1.15] font-bold text-balance sm:text-5xl lg:text-6xl">
                             <LaserText>{ui.home.title}</LaserText>
                         </h1>
                         <p className="mt-6 max-w-xl animate-rise text-lg leading-8 text-steel-200 [animation-delay:1.2s]">{ui.home.lead}</p>
-                        <div className="mt-10 flex animate-rise flex-wrap gap-3 [animation-delay:1.4s]">
+                        <div className="mt-8 animate-rise [animation-delay:1.35s]">
+                            <HeroSearch />
+                        </div>
+                        <div className="mt-8 flex animate-rise flex-wrap gap-3 [animation-delay:1.5s]">
                             <Link
                                 href={localized(locale, 'products')}
                                 className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-navy transition hover:bg-steel-100"
@@ -73,16 +90,49 @@ export default function Home({ categories, featured, services, industries, work,
                                 {ui.actions.request_quote}
                             </Link>
                         </div>
-                        <p className="mt-6 text-xs text-steel-400">{ui.home.quote_note}</p>
+                        <p className="mt-5 text-xs text-steel-400">{ui.home.quote_note}</p>
                     </div>
-                    <div className="mx-auto w-full max-w-md lg:max-w-none">
+                    <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+                        <CaliperMarks className="pointer-events-none absolute inset-0 size-full max-w-[34rem] rtl:-scale-x-100" />
                         <SteelCoil target={hero} />
+                        <QuoteLinePreview className="absolute end-0 top-[6%] hidden animate-rise [animation-delay:1.8s] sm:block" />
                     </div>
                 </div>
-                <div aria-hidden className="h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
+                <div className="border-t border-white/10 bg-night/40 backdrop-blur-sm">
+                    <ul className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:grid-cols-3 sm:px-6 lg:px-8">
+                        {ui.home.points.map((point, index) => {
+                            const Icon = pointIcons[index] ?? Layers;
+
+                            if (index === 2 && !company.whatsapp && !company.phone) {
+                                return null;
+                            }
+
+                            return (
+                                <li key={point.title} className="flex items-start gap-3">
+                                    <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-white/5 ring-1 ring-white/10">
+                                        <Icon aria-hidden className="size-5 text-gold" />
+                                    </span>
+                                    <span>
+                                        <span className="block text-sm font-semibold">{point.title}</span>
+                                        <span className="block text-xs leading-5 text-steel-400">{point.body}</span>
+                                    </span>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
+                <a
+                    href="#how"
+                    className="absolute start-1/2 bottom-28 hidden -translate-x-1/2 flex-col items-center gap-2 text-[11px] text-steel-400 transition hover:text-white lg:flex rtl:translate-x-1/2"
+                >
+                    {ui.home.scroll}
+                    <span aria-hidden className="flex h-9 w-5 justify-center rounded-full border border-white/25 pt-1.5">
+                        <span className="h-2 w-0.5 animate-bounce rounded-full bg-gold" />
+                    </span>
+                </a>
             </section>
 
-            <Section title={ui.home.how_title} tone="light">
+            <Section id="how" title={ui.home.how_title} tone="light">
                 <ol className="grid gap-4 md:grid-cols-3">
                     {ui.home.how_steps.map((step, index) => {
                         const Icon = stepIcons[index] ?? Send;
@@ -231,6 +281,7 @@ export default function Home({ categories, featured, services, industries, work,
 }
 
 type SectionProps = {
+    id?: string;
     title: string;
     lead?: string;
     tone: 'light' | 'steel';
@@ -238,9 +289,9 @@ type SectionProps = {
     children: ReactNode;
 };
 
-function Section({ title, lead, tone, action, children }: SectionProps) {
+function Section({ id, title, lead, tone, action, children }: SectionProps) {
     return (
-        <section className={tone === 'steel' ? 'steel-texture text-white' : 'bg-steel-50'}>
+        <section id={id} className={tone === 'steel' ? 'steel-texture text-white' : 'bg-steel-50'}>
             <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
                 <motion.div {...reveal} className="mb-10 flex flex-wrap items-end justify-between gap-4">
                     <div>
@@ -257,5 +308,14 @@ function Section({ title, lead, tone, action, children }: SectionProps) {
                 {children}
             </div>
         </section>
+    );
+}
+
+function Stat({ value, label }: { value: number; label: string }) {
+    return (
+        <div>
+            <span className="stamp block text-2xl font-bold text-white">{value}</span>
+            <span className="block text-[11px] text-steel-400">{label}</span>
+        </div>
     );
 }

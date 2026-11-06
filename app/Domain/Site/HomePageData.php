@@ -18,7 +18,13 @@ final class HomePageData
             ->groupBy('primary_category_id')
             ->pluck('total', 'primary_category_id');
 
+        $publishedProducts = (int) $counts->sum();
+
         return [
+            'stats' => [
+                'categories' => Category::published()->whereNull('parent_id')->count(),
+                'products' => $publishedProducts,
+            ],
             'categories' => Category::published()->with('media')->whereNull('parent_id')->orderBy('sort')->get()
                 ->map(fn (Category $category) => [
                     'slug' => $category->slug,

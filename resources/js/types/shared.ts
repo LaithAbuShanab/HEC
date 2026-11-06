@@ -50,7 +50,12 @@ export type SiteStrings = {
     brand: string;
     nav: Record<string, string>;
     actions: Record<string, string>;
-    home: Record<string, string> & { how_steps: HowStep[] };
+    home: Record<string, string> & {
+        how_steps: HowStep[];
+        points: HowStep[];
+        popular_terms: string[];
+        line_examples: string[];
+    };
     footer: Record<string, string>;
     weekdays: Record<string, string>;
 };
