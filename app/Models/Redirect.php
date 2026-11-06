@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class Redirect extends Model
 {
     public const STATUS_CODES = [301, 302, 410];
+
+    public const CACHE_KEY = 'redirects.map';
 
     protected $fillable = ['from_path', 'to_path', 'status_code', 'is_active'];
 
@@ -23,6 +27,9 @@ class Redirect extends Model
         static::saving(function (Redirect $redirect) {
             $redirect->from_path = self::normalizePath($redirect->from_path);
         });
+
+        static::saved(fn () => Cache::forget(self::CACHE_KEY));
+        static::deleted(fn () => Cache::forget(self::CACHE_KEY));
     }
 
     public static function normalizePath(string $path): string
@@ -35,5 +42,26 @@ class Redirect extends Model
     public function isGone(): bool
     {
         return $this->status_code === 410;
+    }
+
+    public static function map(): array
+    {
+        return Cache::rememberForever(self::CACHE_KEY, fn () => self::query()
+            ->where('is_active', true)
+            ->get(['id', 'from_path', 'to_path', 'status_code'])
+            ->mapWithKeys(fn (Redirect $redirect) => [$redirect->from_path => [
+                'id' => $redirect->id,
+                'to' => $redirect->to_path,
+                'status' => $redirect->status_code,
+            ]])
+            ->all());
+    }
+
+    public static function recordHit(int $id): void
+    {
+        self::query()->whereKey($id)->update([
+            'hits' => DB::raw('hits + 1'),
+            'last_hit_at' => now(),
+        ]);
     }
 }

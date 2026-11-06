@@ -26,11 +26,11 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 ## Phase 2 — Admin (Filament)
 - [x] Product resource (tabs: general / specs / variants / media / files / SEO / source & review), bulk availability
 - [x] Categories, units, attributes, synonyms, content resources
-- [ ] Redirects resource
+- [x] Redirects resource + global redirect middleware (301/302/410, loop and chain protection)
 - [x] Company settings page (phones, WhatsApp, email, address, map, hours, socials) with per-field client confirmation
 - [x] Quote requests: status workflow, internal notes, signed attachment download, export (permission-gated)
 - [x] Roles admin/editor/sales (policies), MFA for admin
-- [ ] Users resource, activity log viewer, trash/restore
+- [x] Users resource (deactivate instead of delete, MFA reset), activity log viewer, trash/restore on content
 - [ ] Widgets: new quotes, incomplete records, pending approval, failed notifications, top searches
 - [ ] CSV/XLSX import/export of products
 
