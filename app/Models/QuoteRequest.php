@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Domain\Quotes\Enums\FulfillmentMethod;
 use App\Domain\Quotes\Enums\NotificationStatus;
 use App\Domain\Quotes\Enums\QuoteStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,7 +15,7 @@ use Spatie\Activitylog\Support\LogOptions;
 
 class QuoteRequest extends Model
 {
-    use LogsActivity, SoftDeletes;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     public const REFERENCE_PREFIX = 'HEC';
 

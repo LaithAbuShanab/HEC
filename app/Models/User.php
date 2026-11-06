@@ -24,6 +24,10 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
 {
     use HasFactory, HasRoles, InteractsWithAppAuthentication, InteractsWithAppAuthenticationRecovery, LogsActivity, Notifiable;
 
+    protected $attributes = [
+        'is_active' => true,
+    ];
+
     protected function casts(): array
     {
         return [

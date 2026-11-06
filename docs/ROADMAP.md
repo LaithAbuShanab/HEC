@@ -24,11 +24,13 @@ Source of truth: `docs/client/HEC.docx`. Phases follow section 21; done-criteria
 - [x] `php artisan hec:product-register` → register of the 43 items (id, location, review status)
 
 ## Phase 2 — Admin (Filament)
-- [ ] Product resource (tabs: general / specs / variants / media / files / SEO / source & review), bulk availability
-- [ ] Categories, units, attributes, synonyms, content resources, redirects
+- [x] Product resource (tabs: general / specs / variants / media / files / SEO / source & review), bulk availability
+- [x] Categories, units, attributes, synonyms, content resources
+- [ ] Redirects resource
 - [ ] Company settings page (phones, WhatsApp, email, address, map, hours, socials)
-- [ ] Quote requests: status workflow, internal notes, signed attachment download, export (permission-gated)
-- [ ] Roles admin/editor/sales (Shield), MFA for admin, activity log, trash/restore
+- [x] Quote requests: status workflow, internal notes, signed attachment download, export (permission-gated)
+- [x] Roles admin/editor/sales (policies), MFA for admin
+- [ ] Users resource, activity log viewer, trash/restore
 - [ ] Widgets: new quotes, incomplete records, pending approval, failed notifications, top searches
 - [ ] CSV/XLSX import/export of products
 
