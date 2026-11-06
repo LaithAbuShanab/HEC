@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight, FileUp, Layers, MessageCircle, Ruler, Send, ShoppingBasket } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useRef } from 'react';
@@ -14,6 +14,7 @@ import { SteelCoil } from '@/components/site/steel-coil';
 import { useSite } from '@/hooks/use-site';
 import SiteLayout from '@/layouts/site-layout';
 import { localized } from '@/lib/site';
+import type { SeoProps } from '@/types';
 
 type CategoryCard = { slug: string; name: string; description: string | null; image: string | null; products: number; products_label: string };
 type ProductCard = { slug: string; category: string | null; name: string; summary: string | null; image: string | null; availability: string };
@@ -23,6 +24,7 @@ type WorkCard = { slug: string; title: string; image: string | null };
 type FaqItem = { question: string; answer: string };
 
 type HomeProps = {
+    seo: SeoProps;
     stats: { categories: number; products: number };
     categories: CategoryCard[];
     featured: ProductCard[];
@@ -39,7 +41,7 @@ const reveal = {
     transition: { duration: 0.7, ease: [0.2, 0.8, 0.2, 1] },
 } as const;
 
-export default function Home({ stats, categories, featured, services, industries, work, faqs }: HomeProps) {
+export default function Home({ stats, categories, featured, services, industries, work, faqs, seo }: HomeProps) {
     const { locale, ui, company } = useSite();
     const hero = useRef<HTMLElement>(null);
     const Arrow = locale === 'ar' ? ArrowLeft : ArrowRight;
@@ -47,8 +49,7 @@ export default function Home({ stats, categories, featured, services, industries
     const pointIcons = [Layers, FileUp, MessageCircle];
 
     return (
-        <SiteLayout>
-            <Head title={ui.home.title} />
+        <SiteLayout seo={seo}>
 
             <section ref={hero} className="steel-texture relative isolate overflow-hidden pt-(--header-height) text-white">
                 <div aria-hidden className="blueprint-grid absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,#000_30%,transparent_75%)]" />

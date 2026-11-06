@@ -58,6 +58,10 @@ export type SiteStrings = {
     };
     footer: Record<string, string>;
     weekdays: Record<string, string>;
+    specs: Record<string, string>;
+    filters: Record<string, string>;
+    catalog: Record<string, string>;
+    search: Record<string, string>;
 };
 
 export type SharedProps = {
@@ -68,4 +72,48 @@ export type SharedProps = {
     company: CompanyProfile;
     nav: SiteNav;
     ui: SiteStrings;
+};
+
+export type SeoProps = {
+    title: string;
+    description: string | null;
+    canonical: string;
+    alternates: Record<string, string>;
+    robots: string;
+    image: string;
+    type: string;
+    locale: string;
+    siteName: string;
+    jsonLd: Record<string, unknown>[];
+};
+
+export type Image = {
+    src: string;
+    srcset: string | null;
+    alt: string;
+    width: number | null;
+    height: number | null;
+};
+
+export type ProductCardData = {
+    slug: string;
+    category: string | null;
+    categoryName: string | null;
+    name: string;
+    summary: string | null;
+    image: Image | null;
+    availability: { value: string; label: string };
+    condition: string | null;
+    variants: number | null;
+};
+
+export type PageLink = { page: number; url: string; active: boolean };
+
+export type Paginated<T> = {
+    data: T[];
+    currentPage: number;
+    lastPage: number;
+    links: PageLink[];
+    prev: string | null;
+    next: string | null;
 };

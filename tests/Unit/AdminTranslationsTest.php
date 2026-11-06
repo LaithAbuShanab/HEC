@@ -18,7 +18,7 @@ it('keeps the arabic and english translations in sync', function (string $file) 
 
     expect(array_values(array_diff($arabic, $english)))->toBe([], 'Missing in English')
         ->and(array_values(array_diff($english, $arabic)))->toBe([], 'Missing in Arabic');
-})->with(['admin', 'site']);
+})->with(['admin', 'site', 'seo']);
 
 it('keeps placeholders identical across languages', function () {
     $arabic = require dirname(__DIR__, 2).'/lang/ar/admin.php';

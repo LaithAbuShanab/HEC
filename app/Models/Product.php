@@ -8,6 +8,7 @@ use App\Domain\Catalog\Enums\ReviewStatus;
 use App\Domain\Catalog\Support\SearchNormalizer;
 use App\Models\Concerns\HasPublicationRules;
 use App\Models\Concerns\HasReviewStatus;
+use App\Models\Concerns\HasWebImages;
 use App\Models\Contracts\Translatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,7 +24,9 @@ use Spatie\Translatable\HasTranslations;
 
 class Product extends Model implements HasMedia, Translatable
 {
-    use HasPublicationRules, HasReviewStatus, HasTranslations, InteractsWithMedia, LogsActivity, SoftDeletes;
+    use HasPublicationRules, HasReviewStatus, HasTranslations, HasWebImages, InteractsWithMedia, LogsActivity, SoftDeletes {
+        HasWebImages::registerMediaConversions insteadof InteractsWithMedia;
+    }
 
     protected $fillable = [
         'appendix_no', 'sku', 'slug', 'primary_category_id',
