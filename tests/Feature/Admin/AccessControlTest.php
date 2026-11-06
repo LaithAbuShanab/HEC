@@ -66,14 +66,19 @@ it('gives active admins everything and inactive admins nothing', function () {
         ->and(staff(Role::Admin, active: false)->can('viewAny', User::class))->toBeFalse();
 });
 
-it('requires multi-factor authentication for admins only', function () {
-    $panel = Filament::getPanel('admin');
+it('forces staff without an authenticator to set one up before using the panel', function (Role $role) {
+    $user = User::factory()->withoutMfa()->create();
+    $user->assignRole($role->value);
 
-    $this->actingAs(staff(Role::Admin));
-    expect($panel->isMultiFactorAuthenticationRequired())->toBeTrue();
+    $this->actingAs($user)->get('/admin')->assertRedirect('/admin/multi-factor-authentication/set-up');
+    $this->actingAs($user)->get('/admin/products')->assertRedirect('/admin/multi-factor-authentication/set-up');
+})->with(Role::cases());
 
-    $this->actingAs(staff(Role::Editor));
-    expect($panel->isMultiFactorAuthenticationRequired())->toBeFalse();
+it('lets staff with an authenticator into the panel', function () {
+    $user = staff(Role::Editor);
+
+    expect(filled($user->getAppAuthenticationSecret()))->toBeTrue();
+    $this->actingAs($user)->get('/admin')->assertOk();
 });
 
 it('creates staff users from the console', function () {

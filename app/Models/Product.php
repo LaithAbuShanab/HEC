@@ -86,12 +86,18 @@ class Product extends Model implements HasMedia, Translatable
     {
         $blockers = $this->missingTranslations(['name', 'short_description']);
 
-        if (! $this->media()->where('collection_name', 'main')->exists()) {
+        $hasMainImage = $this->relationLoaded('media')
+            ? $this->media->contains('collection_name', 'main')
+            : $this->media()->where('collection_name', 'main')->exists();
+
+        if (! $hasMainImage) {
             $blockers[] = 'main_image';
         }
 
-        $category = Category::find($this->primary_category_id);
-        if ($category === null || $category->review_status !== ReviewStatus::Published) {
+        $category = $this->relationLoaded('primaryCategory')
+            ? $this->primaryCategory
+            : Category::find($this->primary_category_id);
+        if (! $category instanceof Category || $category->review_status !== ReviewStatus::Published) {
             $blockers[] = 'category_unpublished';
         }
 

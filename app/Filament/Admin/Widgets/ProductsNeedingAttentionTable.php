@@ -30,6 +30,7 @@ class ProductsNeedingAttentionTable extends TableWidget
         return $table
             ->heading(__('admin.dashboard.catalog.attention'))
             ->query(Product::query()
+                ->with(['media', 'primaryCategory'])
                 ->where('review_status', '!=', ReviewStatus::Published)
                 ->orderByRaw('case when review_status = ? then 0 else 1 end', [ReviewStatus::Pending->value])
                 ->orderBy('sort'))

@@ -11,31 +11,31 @@ final class Options
 {
     public static function categories(): array
     {
-        return Category::query()->orderBy('sort')->get()
-            ->mapWithKeys(fn (Category $category) => [$category->id => $category->getTranslation('name', 'ar')])
-            ->all();
+        return once(fn () => Category::query()->orderBy('sort')->get()
+            ->mapWithKeys(fn (Category $category) => [$category->id => $category->getTranslation('name', app()->getLocale())])
+            ->all());
     }
 
     public static function saleUnits(): array
     {
-        return SaleUnit::query()->orderBy('sort')->get()
-            ->mapWithKeys(fn (SaleUnit $unit) => [$unit->id => $unit->getTranslation('name', 'ar')])
-            ->all();
+        return once(fn () => SaleUnit::query()->orderBy('sort')->get()
+            ->mapWithKeys(fn (SaleUnit $unit) => [$unit->id => $unit->getTranslation('name', app()->getLocale())])
+            ->all());
     }
 
     public static function specAttributes(): array
     {
-        return SpecAttribute::query()->orderBy('sort')->get()
+        return once(fn () => SpecAttribute::query()->orderBy('sort')->get()
             ->mapWithKeys(fn (SpecAttribute $attribute) => [
-                $attribute->id => $attribute->getTranslation('name', 'ar').($attribute->unit ? " ({$attribute->unit})" : ''),
+                $attribute->id => $attribute->getTranslation('name', app()->getLocale()).($attribute->unit ? " ({$attribute->unit})" : ''),
             ])
-            ->all();
+            ->all());
     }
 
     public static function products(?int $except = null): array
     {
         return Product::query()->when($except, fn ($query) => $query->whereKeyNot($except))->orderBy('sort')->get()
-            ->mapWithKeys(fn (Product $product) => [$product->id => $product->getTranslation('name', 'ar')])
+            ->mapWithKeys(fn (Product $product) => [$product->id => $product->getTranslation('name', app()->getLocale())])
             ->all();
     }
 }

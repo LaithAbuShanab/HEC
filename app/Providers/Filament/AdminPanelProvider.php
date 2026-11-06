@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Models\User;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -32,7 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->profile(isSimple: false)
             ->multiFactorAuthentication(
                 AppAuthentication::make()->recoverable(),
-                isRequired: fn (): bool => auth()->user() instanceof User && auth()->user()->isAdmin(),
+                isRequired: true,
             )
             ->brandName('HEC')
             ->brandLogo(asset('images/brand/logo-horizontal.webp'))
