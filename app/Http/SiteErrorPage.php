@@ -32,10 +32,15 @@ final class SiteErrorPage
 
         $title = __("site.errors.{$status}.title");
 
-        return Inertia::render('error', [
+        $page = Inertia::render('error', [
             'status' => $status,
             'seo' => SeoData::make($title)->noindex()->alternates([])->toArray($request),
-        ])->toResponse($request)->setStatusCode($status)->withHeaders(['X-Robots-Tag' => 'noindex']);
+        ])->toResponse($request);
+
+        $page->setStatusCode($status);
+        $page->headers->set('X-Robots-Tag', 'noindex');
+
+        return $page;
     }
 
     private static function isExcluded(Request $request): bool
